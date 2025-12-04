@@ -4,44 +4,48 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Session;
 
 class LoginController extends Controller
 {
-    public function showLoginForm() {
+    // Muestra el formulario de login
+    public function showLoginForm()
+    {
+        // Si ya está logueado, lo mandamos a inicio
         if (Auth::check()) {
-            return redirect()->route('admin.dashboard');
+            return redirect()->route('inicio');
         }
         return view('login');
     }
 
-    public function login(Request $request) {
-        $request->validate([
-            'correo'   => 'required|email', // Validamos el campo 'correo'
-            'password' => 'required'
+    // Procesa el inicio de sesión
+    public function login(Request $request)
+    {
+        // 1. Validamos que los campos no estén vacíos
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
         ]);
 
-        
-        $credenciales = [
-            'correo'   => $request->correo,
-            'password' => $request->password,
-            
-        ];
-
-        if (Auth::attempt($credenciales)) {
+        // 2. Intentamos loguear (Auth::attempt encripta y compara automáticamente)
+        if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            // Usamos 'nombre' en lugar de 'name'
-            Session::put('admin_nombre', Auth::user()->nombre); 
-            return redirect()->route('admin.dashboard');
+            
+            // Redirige a la página que intentó visitar o a 'inicio' por defecto
+            return redirect()->intended('inicio');
         }
 
-        return back()->with('mensaje', 'Credenciales incorrectas o usuario no encontrado.');
+        // 3. Si falla, regresa con error
+        return back()->withErrors([
+            'email' => 'Las credenciales no coinciden con nuestros registros.',
+        ])->onlyInput('email');
     }
 
-    public function logout(Request $request) {
+    // Cerrar sesión
+    public function logout(Request $request)
+    {
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect()->route('inicio');
+        return redirect()->route('login');
     }
 }

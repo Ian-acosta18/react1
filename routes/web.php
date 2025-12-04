@@ -77,3 +77,16 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     // Eliminar cita
     Route::get('/citas/eliminar/{id}', [CitasController::class, 'eliminacita'])->name('eliminacita');
 });
+
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+
+Route::get('/crear-usuario', function() {
+    User::create([
+        'name' => 'Administrador',
+        'email' => 'admin@test.com',
+        'password' => '12345678' // Laravel lo encripta automático por tu modelo User
+    ]);
+    return "Usuario creado: admin@test.com / 12345678";
+});
+
