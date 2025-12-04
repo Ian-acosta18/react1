@@ -1,30 +1,52 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container" style="margin: 50px auto; text-align: center;">
-    <h1>Bienvenido, {{ Session::get('admin_session') }}</h1>
-    <p class="lead">Panel de Administración Aura Spa</p>
-    <hr>
+<div class="container" style="margin-top: 50px; margin-bottom: 80px;">
     
+    <div class="text-center mb-5">
+        <h1 style="font-family: 'Playfair Display', serif; color: #B98D7B;">Panel de Administración</h1>
+        <p class="lead">Bienvenido, <strong>{{ Session::get('admin_session') }}</strong>. ¿Qué deseas gestionar hoy?</p>
+    </div>
+
     <div class="row justify-content-center">
-        <div class="col-md-4">
-            <div class="card p-4 shadow-sm">
-                <h3>Servicios</h3>
-                <p>Gestionar precios, categorías y fotos.</p>
-                <a href="{{ route('admin.servicios.reporte') }}" class="btn btn-dark">Administrar</a>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm border-0" style="transition: transform 0.3s;">
+                <div class="card-body text-center p-5">
+                    <h3 style="color: #5c4b45;">Servicios</h3>
+                    <p class="text-muted">Corte, Tinte, Masajes...</p>
+                    <hr>
+                    <a href="{{ route('admin.servicios.reporte') }}" class="btn btn-block w-100" style="background-color: #B98D7B; color: white;">Entrar a Servicios</a>
+                </div>
             </div>
         </div>
 
-        <div class="col-md-4">
-            <div class="card p-4 shadow-sm" style="opacity: 0.5;">
-                <h3>Productos</h3>
-                <p>Próximamente...</p>
-                <button class="btn btn-secondary" disabled>En construcción</button>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm border-0" style="transition: transform 0.3s;">
+                <div class="card-body text-center p-5">
+                    <h3 style="color: #5c4b45;">Productos</h3>
+                    <p class="text-muted">Bolsos, Cremas, Accesorios...</p>
+                    <hr>
+                    <a href="#" class="btn btn-secondary w-100 disabled">Próximamente</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm border-0" style="transition: transform 0.3s;">
+                <div class="card-body text-center p-5">
+                    <h3 style="color: #5c4b45;">Instalaciones</h3>
+                    <p class="text-muted">Áreas del Spa, Cabinas...</p>
+                    <hr>
+                    <a href="#" class="btn btn-secondary w-100 disabled">Próximamente</a>
+                </div>
             </div>
         </div>
     </div>
-    
-    <br><br>
-    <a href="{{ route('cerrarsesion') }}" class="btn btn-danger">Cerrar Sesión</a>
+
+    <div class="text-center mt-5">
+        <a href="{{ route('cerrarsesion') }}" class="text-danger" style="text-decoration: none; font-weight: bold;">
+            &larr; Cerrar Sesión
+        </a>
+    </div>
 </div>
 @endsection

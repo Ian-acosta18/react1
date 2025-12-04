@@ -36,22 +36,15 @@ Route::get('/cerrar-sesion', [LoginController::class, 'logout'])->name('cerrarse
 Route::middleware(['validaradmin'])->prefix('admin')->name('admin.')->group(function () {
 
     // Dashboard
+    
+
     Route::get('/dashboard', function () {
         return view('admin.dashboard');
     })->name('dashboard');
-
-    // --- CRUD SERVICIOS (Estilo ProyAplicWeb) ---
-    Route::get('/servicios', [AdminServiciosController::class, 'reporte'])->name('servicios.reporte');
-    
-    // Alta
+Route::get('/servicios', [AdminServiciosController::class, 'reporte'])->name('servicios.reporte');
     Route::get('/servicios/alta', [AdminServiciosController::class, 'alta'])->name('servicios.alta');
     Route::post('/servicios/guardar', [AdminServiciosController::class, 'guardar'])->name('servicios.guardar');
-    
-    // Edición
     Route::get('/servicios/editar/{id}', [AdminServiciosController::class, 'editar'])->name('servicios.editar');
     Route::post('/servicios/actualizar', [AdminServiciosController::class, 'actualizar'])->name('servicios.actualizar');
-    
-    // Eliminar
     Route::get('/servicios/eliminar/{id}', [AdminServiciosController::class, 'eliminar'])->name('servicios.eliminar');
-
 });
