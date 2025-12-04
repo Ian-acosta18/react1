@@ -15,9 +15,9 @@ class AdminServiciosController extends Controller
     // 1. REPORTE (CONSULTA)
     public function reporte()
     {
-        // Join para traer el nombre de la categoría
+        // CORREGIDO: s.imagen en lugar de s.iamgen
         $servicios = DB::select("
-            SELECT s.id, s.nombre_servicio, s.precio, s.iamgen, c.nombre_categoria 
+            SELECT s.id, s.nombre_servicio, s.precio, s.imagen, c.nombre_categoria 
             FROM servicios AS s 
             INNER JOIN categorias AS c ON s.categoria_id = c.id 
             ORDER BY s.nombre_servicio ASC
@@ -29,10 +29,8 @@ class AdminServiciosController extends Controller
     // 2. ALTA (VISTA)
     public function alta()
     {
-        // Obtenemos categorías para el select
         $categorias = DB::select("SELECT * FROM categorias ORDER BY nombre_categoria ASC");
         
-        // Calculamos el siguiente ID para renombrar la foto (estilo proyaplicweb)
         $ultimo = DB::select("SELECT id FROM servicios ORDER BY id DESC LIMIT 1");
         $idsigue = !empty($ultimo) ? $ultimo[0]->id + 1 : 1;
 
@@ -51,26 +49,27 @@ class AdminServiciosController extends Controller
             'foto' => 'image|mimes:jpg,jpeg,png'
         ]);
 
-        // Manejo de imagen similar a tu referencia
         $file = $request->file('foto');
-        $img = '';
+        $img = ''; // Variable inicial vacía
         
         if ($file) {
-            // Usamos time() para evitar caché o conflictos
             $img = 'servicio_' . time() . '.' . $file->getClientOriginalExtension();
-            // Guardar en public/imagen/ (según tu estructura de carpetas)
             $file->move(public_path('imagen'), $img);
             $ruta_imagen = 'imagen/' . $img;
         } else {
-            $ruta_imagen = 'imagen/sinfoto.jpg'; // Asegúrate de tener esta imagen
+            // Si no suben foto, dejamos esto vacío o la ruta por defecto, 
+            // pero es mejor dejarlo vacío y controlarlo en la vista con el @if
+            $ruta_imagen = ''; 
         }
 
-        // Insertar
         $servicio = new Servicio;
         $servicio->nombre_servicio = $request->nombre_servicio;
         $servicio->precio = $request->precio;
         $servicio->categoria_id = $request->categoria_id;
-        $servicio->iamgen = $ruta_imagen; // Nota: campo 'iamgen' de tu DB
+        
+        // CORREGIDO: propiedad imagen
+        $servicio->imagen = $ruta_imagen; 
+        
         $servicio->save();
 
         Session::flash('mensaje', "El servicio $request->nombre_servicio ha sido creado.");
@@ -87,7 +86,7 @@ class AdminServiciosController extends Controller
             return redirect()->route('admin.servicios.reporte');
         }
 
-        return view('admin.servicios.edita')
+        return view('admin.servicios.edita') // Asegúrate de que tu vista se llame 'edita' o 'edit'
             ->with('servicio', $servicio[0])
             ->with('categorias', $categorias);
     }
@@ -104,12 +103,13 @@ class AdminServiciosController extends Controller
 
         $servicio = Servicio::find($request->id);
         
-        // Manejo de nueva foto
         $file = $request->file('foto');
         if ($file) {
             $img = 'servicio_' . time() . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('imagen'), $img);
-            $servicio->iamgen = 'imagen/' . $img; // Actualizamos la ruta
+            
+            // CORREGIDO: propiedad imagen
+            $servicio->imagen = 'imagen/' . $img; 
         }
 
         $servicio->nombre_servicio = $request->nombre_servicio;
@@ -124,7 +124,6 @@ class AdminServiciosController extends Controller
     // 6. ELIMINAR (ACCION)
     public function eliminar($id)
     {
-        // Borrado físico como en tu referencia "eliminaempleado"
         DB::delete("DELETE FROM servicios WHERE id = ?", [$id]);
         
         Session::flash('mensaje', "Servicio eliminado correctamente.");
