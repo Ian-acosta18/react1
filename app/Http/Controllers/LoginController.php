@@ -21,13 +21,11 @@ class LoginController extends Controller
             'password' => 'required'
         ]);
 
-        // Mapeamos los datos del formulario a las columnas de tu BD
-        // 'correo' (BD) => $request->correo (Formulario)
+        
         $credenciales = [
             'correo'   => $request->correo,
             'password' => $request->password,
-            // Opcional: Verificar si está activo
-            // 'activo' => 1 
+            
         ];
 
         if (Auth::attempt($credenciales)) {
