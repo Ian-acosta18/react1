@@ -14,6 +14,13 @@
             
             @foreach ($categoria->servicios as $servicio)
                 <div class="servicio-tarjeta">
+                    @if($servicio->imagen)
+                    <div class="servicio-img-wrapper" style="margin-bottom: 10px; text-align: center;">
+                    <img src="{{ asset($servicio->imagen) }}" 
+                     alt="{{ $servicio->nombre_servicio }}" 
+                     style="max-width: 100%; height: 150px; object-fit: cover; border-radius: 8px;">
+                    </div>
+                    @endif
                     <div class="info">
                         <h4>{{ $servicio->nombre_servicio }}</h4> 
                         
@@ -21,6 +28,7 @@
                         {{-- @if (isset($servicio->es_desde) && $servicio->es_desde)
                             <span>Desde</span>
                         @endif --}}
+
                     </div>
                     
                     {{-- Muestra el precio formateado (ej: $150) --}}

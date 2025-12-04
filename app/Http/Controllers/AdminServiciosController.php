@@ -19,19 +19,31 @@ class AdminServiciosController extends Controller
     }
 
     public function store(Request $request) {
-        $request->validate([
-            'nombre_servicio' => 'required',
-            'categoria_id' => 'required',
-            'precio' => 'required|numeric'
-        ]);
+    $request->validate([
+        'nombre_servicio' => 'required',
+        'categoria_id' => 'required',
+        'precio' => 'required|numeric',
+        'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048' // Validación nueva
+    ]);
 
-        $servicio = new Servicio();
-        $servicio->nombre_servicio = $request->nombre_servicio;
-        $servicio->categoria_id = $request->categoria_id;
-        $servicio->precio = $request->precio;
-        $servicio->save();
+    $servicio = new Servicio();
+    $servicio->nombre_servicio = $request->nombre_servicio;
+    $servicio->categoria_id = $request->categoria_id;
+    $servicio->precio = $request->precio;
 
-        return redirect()->route('servicios.index');
+    // LÓGICA DE IMAGEN NUEVA
+    if ($request->hasFile('imagen')) {
+        $file = $request->file('imagen');
+        // Nombramos el archivo con tiempo para evitar duplicados
+        $filename = time() . '_' . $file->getClientOriginalName();
+        // Guardamos en la carpeta public/imagen
+        $file->move(public_path('imagen'), $filename);
+        $servicio->imagen = 'imagen/' . $filename;
+    }
+
+    $servicio->save();
+
+    return redirect()->route('servicios.index');
     }
 
     public function edit($id) {

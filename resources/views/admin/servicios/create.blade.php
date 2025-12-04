@@ -4,7 +4,7 @@
 <div style="max-width: 600px; margin: 2rem auto;">
     <h2 class="seccion-titulo">Nuevo Servicio</h2>
     
-    <form action="{{ route('servicios.store') }}" method="POST" class="formulario">
+    <form action="{{ route('servicios.store') }}" method="POST" class="formulario" enctype="multipart/form-data">
         @csrf
 
         <div class="form-grupo">
@@ -20,6 +20,11 @@
         <div class="form-grupo">
             <label>Nombre del Servicio:</label>
             <input type="text" name="nombre_servicio" placeholder="Ej: Corte de Caballero" required>
+        </div>
+
+        <div class="form-grupo">
+        <label>Imagen del Servicio (Opcional):</label>
+        <input type="file" name="imagen" accept="image/*">
         </div>
 
         <div class="form-grupo">

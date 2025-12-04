@@ -4,7 +4,7 @@
 <div style="max-width: 600px; margin: 2rem auto;">
     <h2 class="seccion-titulo">Editar Servicio</h2>
     
-    <form action="{{ route('servicios.update', $servicio->id) }}" method="POST" class="formulario">
+    <form action="{{ route('servicios.update', $servicio->id) }}" method="POST" class="formulario" enctype="multipart/form-data"></form>
         @csrf
         @method('PUT')
 

@@ -12,8 +12,7 @@ class Servicio extends Model
     protected $table = 'servicios';
     protected $primaryKey = 'id';
 
-    protected $fillable = ['categoria_id', 'nombre_servicio', 'precio'];
-
+protected $fillable = ['categoria_id', 'nombre_servicio', 'precio', 'imagen'];
     // Relación Inversa: Un servicio pertenece a una categoría
     public function categoria()
     {
