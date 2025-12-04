@@ -20,9 +20,11 @@ class PageController extends Controller
     }
 
     public function servicios() {
-        // Uso de Eager Loading (with('servicios')) para optimizar consultas a la BD
-        $categorias = Categoria::with('servicios')->get();
-        return view('pages.servicios', ['categorias' => $categorias]);
+        // 1. Consultamos los servicios de la base de datos
+        $servicios = DB::select("SELECT * FROM servicios ORDER BY nombre_servicio ASC");
+
+        // 2. Enviamos la variable $servicios a la vista
+        return view('pages.servicios')->with('servicios', $servicios);
     }
 
     public function nosotros() {
