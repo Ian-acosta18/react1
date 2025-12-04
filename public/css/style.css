@@ -1,0 +1,814 @@
+:root {
+    --color-fondo: #FDFBF7;
+    --color-texto: #5c4b45;
+    --color-principal: #B98D7B;
+    --color-tarjeta: #FFFFFF;
+    --color-acento-claro: #F9F3EC;
+    
+    --fuente-titulos: 'Playfair Display', serif;
+    --fuente-cuerpo: 'Lato', sans-serif;
+    --fuente-cursiva: 'Dancing Script', cursive;
+
+    --color-principal-rgb: 185, 141, 123;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--fuente-cuerpo);
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    line-height: 1.6;
+}
+
+main {
+    padding: 2rem 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+header {
+    background: #fff;
+    padding: 1.5rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--color-acento-claro);
+}
+
+header .logo h1 {
+    font-family: var(--fuente-titulos);
+    color: var(--color-principal);
+    font-size: 2.5rem;
+    margin: 0;
+    line-height: 1;
+}
+
+header .logo h2 {
+    font-family: var(--fuente-titulos);
+    color: var(--color-principal);
+    font-size: 1rem;
+    font-weight: 400;
+    letter-spacing: 2px;
+    margin: 0;
+}
+
+header nav ul {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+}
+
+header nav a {
+    text-decoration: none;
+    color: var(--color-texto);
+    font-weight: 400;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+
+header nav a:hover {
+    color: var(--color-principal);
+}
+
+header nav .btn-reserva {
+    background-color: var(--color-principal);
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+header nav .btn-reserva:hover {
+    background-color: #a57c6b;
+    color: #fff;
+}
+
+footer {
+    text-align: center;
+    padding: 2rem;
+    background-color: var(--color-acento-claro);
+    color: var(--color-texto);
+    margin-top: 2rem;
+}
+
+footer .footer-content p:first-child {
+    font-family: var(--fuente-cursiva);
+    font-size: 1.8rem;
+    color: var(--color-principal);
+    margin-bottom: 1rem;
+}
+
+footer .social-links {
+    margin-bottom: 1rem;
+}
+
+footer .social-links a {
+    margin: 0 0.5rem;
+    text-decoration: none;
+    color: var(--color-texto);
+}
+
+footer .social-links a:hover {
+    color: var(--color-principal);
+}
+
+.seccion-titulo {
+    font-family: var(--fuente-cursiva);
+    font-size: 3.5rem;
+    color: var(--color-principal);
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+/* ============================================
+--- INICIO SECCIÓN HERO (PÁGINA DE INICIO) ---
+============================================
+*/
+.hero-inicio {
+    display: flex;
+    flex-wrap: wrap; 
+    justify-content: center;
+    align-items: center;
+    gap: 3rem; 
+    padding: 4rem 2rem;
+    background-color: var(--color-acento-claro); 
+    border-radius: 15px; 
+    position: relative; 
+    overflow: hidden; 
+    max-width: 1200px; /* Para que coincida con el resto de main */
+    margin: 2rem auto;
+}
+
+/* Efecto de patrón de fondo (opcional, similar al antiguo hero-nuevo) */
+.hero-inicio::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px),
+                      linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px);
+    background-size: 50px 50px; 
+    opacity: 0.2;
+    pointer-events: none; 
+    z-index: 1;
+}
+
+.hero-imagen-decorativa {
+    position: relative;
+    z-index: 2; 
+    background-color: var(--color-principal); /* Fondo para la imagen */
+    padding: 1.5rem; 
+    border-radius: 15px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2); 
+    transform: rotate(-3deg); /* Mantener un toque distintivo */
+    max-width: 450px; /* Tamaño un poco más grande para la imagen */
+    min-width: 300px; /* Para asegurar visibilidad en pantallas más pequeñas */
+    flex-shrink: 0; /* Evitar que se encoja demasiado */
+}
+
+.hero-imagen-decorativa img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 8px; 
+    filter: brightness(0.95);
+}
+
+.hero-contenido-inicio {
+    flex: 1; 
+    min-width: 300px; 
+    text-align: left;
+    z-index: 2;
+    padding-left: 2rem; /* Espacio entre imagen y texto */
+}
+
+.hero-contenido-inicio h1 {
+    font-family: var(--fuente-titulos);
+    font-size: 3.8rem; 
+    color: var(--color-texto); 
+    line-height: 1.05; 
+    margin-bottom: 1.5rem;
+    text-transform: uppercase; 
+    font-weight: 600; 
+    letter-spacing: -1px; 
+}
+
+.hero-contenido-inicio p {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    max-width: 550px; /* Un poco más de ancho para el texto */
+    color: #6a5c57; 
+}
+
+.btn-inicio-reserva { 
+    display: inline-block;
+    padding: 1rem 2.5rem;
+    font-size: 1.1rem;
+    font-family: var(--fuente-titulos);
+    font-weight: 600;
+    background-color: var(--color-principal);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 5px 15px rgba(var(--color-principal-rgb), 0.3); 
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-inicio-reserva:hover {
+    background-color: #a57c6b;
+    transform: translateY(-2px); 
+    box-shadow: 0 8px 20px rgba(var(--color-principal-rgb), 0.4);
+}
+/* ============================================
+--- FIN SECCIÓN HERO (PÁGINA DE INICIO) ---
+============================================
+*/
+
+
+/* --- Página: Servicios (con tarjetas y sombras) --- */
+.servicio-categoria {
+    margin-bottom: 3rem;
+    background: var(--color-tarjeta, #FFFFFF);
+    padding: 2rem;
+    border-radius: 12px;
+    border: 1px solid #ECECEC;
+    box-shadow: 0 8px 20px rgba(92, 75, 69, 0.07); 
+}
+
+.servicio-categoria h3 {
+    font-family: var(--fuente-titulos);
+    font-size: 2rem;
+    color: var(--color-texto);
+    border-bottom: 2px solid var(--color-principal);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.servicios-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.servicio-tarjeta {
+    background: var(--color-tarjeta);
+    border: 1px solid #EAEAEA; 
+    box-shadow: 0 5px 15px rgba(92, 75, 69, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 1.5rem;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.servicio-tarjeta:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(92, 75, 69, 0.15);
+}
+
+.servicio-tarjeta .info h4 {
+    font-family: var(--fuente-titulos);
+    font-size: 1.2rem;
+    color: var(--color-texto);
+    margin-bottom: 0.25rem;
+}
+
+.servicio-tarjeta .info span {
+    font-size: 0.9rem;
+    color: #888;
+}
+
+.servicio-tarjeta .precio {
+    font-family: var(--fuente-titulos);
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--color-principal);
+}
+
+/* --- Estilos para la Página "Nosotros" (Nuevo Diseño) --- */
+.nosotros-seccion {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3rem;
+    align-items: center;
+    background-color: var(--color-tarjeta);
+    padding: 3.5rem;
+    border-radius: 15px;
+    box-shadow: 0 12px 30px rgba(92, 75, 69, 0.09);
+    max-width: 1100px;
+    margin: 2rem auto;
+    border: 1px solid var(--color-acento-claro);
+}
+
+.nosotros-imagen {
+    flex: 1;
+    min-width: 300px;
+    position: relative;
+    padding: 1rem;
+    background-color: var(--color-acento-claro);
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    transform: rotate(2deg);
+}
+
+.nosotros-imagen img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 8px;
+    filter: brightness(0.98);
+}
+
+.nosotros-contenido-texto {
+    flex: 1.5;
+    min-width: 350px;
+    padding-left: 1.5rem;
+}
+
+.nosotros-contenido-texto h3 {
+    font-family: var(--fuente-titulos);
+    font-size: 2rem;
+    color: var(--color-principal);
+    margin-bottom: 1rem;
+    line-height: 1.2;
+}
+
+.nosotros-contenido-texto p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--color-texto);
+    margin-bottom: 1.5rem;
+}
+
+/* --- Página: Reservaciones (Formulario Base) --- */
+.formulario {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: var(--color-tarjeta);
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.form-grupo {
+    margin-bottom: 1.5rem;
+}
+
+.form-grupo label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 400;
+}
+
+.form-grupo input,
+.form-grupo select,
+.form-grupo textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--color-acento-claro);
+    border-radius: 5px;
+    font-family: var(--fuente-cuerpo);
+    font-size: 1rem;
+}
+
+.form-grupo input:focus,
+.form-grupo select:focus,
+.form-grupo textarea:focus {
+    outline: none;
+    border-color: var(--color-principal);
+}
+
+.btn-submit {
+    display: block;
+    width: 100%;
+    padding: 0.75rem;
+    background-color: var(--color-principal);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-family: var(--fuente-titulos);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-submit:hover {
+    background-color: #a57c6b;
+}
+
+/* ============================================
+--- SECCIÓN CONTACTO (DISEÑO SIMÉTRICO) ---
+============================================
+*/
+
+.contacto-layout {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 0; 
+    background-color: var(--color-tarjeta); 
+    padding: 3rem; 
+    border-radius: 15px; 
+    box-shadow: 0 15px 50px rgba(92, 75, 69, 0.12); 
+    max-width: 1200px; 
+    margin: 2rem auto; 
+    border: 1px solid var(--color-acento-claro); 
+}
+
+.contacto-mapa-info {
+    flex: 1; 
+    min-width: 350px; 
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; 
+    padding-right: 2.5rem; 
+    border-right: 1px solid var(--color-acento-claro); 
+}
+
+.contacto-formulario {
+    flex: 1; 
+    min-width: 350px;
+    padding-left: 2.5rem; 
+}
+
+/* Títulos para ambas columnas */
+.contacto-mapa-info .seccion-subtitulo,
+.contacto-formulario .seccion-subtitulo {
+    font-family: var(--fuente-titulos);
+    color: var(--color-principal); 
+    font-size: 2rem; 
+    text-align: left;
+    margin-bottom: 1.8rem;
+    padding-bottom: 0.8rem; 
+    border-bottom: 2px solid var(--color-principal); 
+}
+
+.contacto-mapa-info p {
+    font-size: 0.95rem;
+    margin-bottom: 0.6rem;
+    line-height: 1.5;
+    color: #6a5c57; 
+}
+
+/* Imagen de uñas (diseño simétrico, sin rotación) */
+.contacto-imagen-decorativa {
+    width: 100%;
+    margin-top: 2rem; 
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(92, 75, 69, 0.15); 
+    border: 1px solid var(--color-acento-claro);
+}
+
+.contacto-imagen-decorativa img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Estilo del mapa AHORA DENTRO DEL FORMULARIO */
+.contacto-formulario .mapa-responsive {
+    width: 100%;
+    height: 0;
+    padding-bottom: 75%; /* Proporción 4:3 */
+    position: relative;
+    margin-top: 2rem; /* Espacio desde el botón "Enviar" */
+    border-radius: 12px; 
+    border: 1px solid var(--color-acento-claro); 
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(92, 75, 69, 0.15); 
+}
+
+.contacto-formulario .mapa-responsive iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+/* Estilos del formulario (ya definidos pero repetimos para claridad) */
+.contacto-formulario .form-grupo {
+    margin-bottom: 1.2rem; 
+}
+
+.contacto-formulario input[type="text"],
+.contacto-formulario input[type="email"],
+.contacto-formulario textarea {
+    width: 100%;
+    padding: 0.9rem 1.1rem; 
+    border: 1px solid #D8D8D8; 
+    border-radius: 6px; 
+    font-family: var(--fuente-cuerpo);
+    font-size: 0.95rem;
+    background-color: #FAFAFA; 
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05); 
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.contacto-formulario input:focus,
+.contacto-formulario textarea:focus {
+    outline: none;
+    border-color: var(--color-principal); 
+    background-color: #FFF; 
+    box-shadow: 0 3px 10px rgba(var(--color-principal-rgb), 0.2); 
+}
+
+.btn-shiner {
+    display: block;
+    width: 100%;
+    padding: 1rem 1.5rem;
+    background-color: var(--color-principal); 
+    color: #fff; 
+    border: none; 
+    border-radius: 6px; 
+    font-size: 1.1rem;
+    font-weight: 600;
+    font-family: var(--fuente-titulos);
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 5px 15px rgba(var(--color-principal-rgb), 0.3);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.1s ease;
+    margin-top: 1.8rem;
+}
+
+.btn-shiner:hover {
+    background-color: #a57c6b; 
+    box-shadow: 0 8px 20px rgba(var(--color-principal-rgb), 0.4); 
+    transform: translateY(-2px); 
+}
+
+.btn-shiner:active {
+    transform: translateY(1px); 
+    box-shadow: 0 2px 5px rgba(var(--color-principal-rgb), 0.2);
+}
+
+/* ==========================================
+--- FIN SECCIÓN CONTACTO ---
+==========================================
+*/
+
+
+/* Clases de accesibilidad */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/* --- Media Queries para Responsive (Generales) --- */
+@media (max-width: 992px) {
+    /* Ajustes para el hero-inicio en pantallas medianas */
+    .hero-inicio {
+        flex-direction: column; 
+        text-align: center;
+        padding: 3rem 1rem;
+        gap: 2.5rem;
+    }
+
+    .hero-imagen-decorativa {
+        transform: rotate(0deg); /* Enderezar la imagen */
+        margin-bottom: 1.5rem;
+        max-width: 80%; /* Hacerla un poco más pequeña */
+        padding: 1rem;
+    }
+
+    .hero-contenido-inicio {
+        text-align: center;
+        padding-left: 0; /* Quitar el padding extra */
+    }
+    
+    .hero-contenido-inicio h1 {
+        font-size: 3rem; 
+    }
+
+    .nosotros-seccion {
+        flex-direction: column;
+        text-align: center;
+        padding: 2.5rem;
+        gap: 2.5rem;
+    }
+
+    .nosotros-imagen {
+        transform: rotate(0deg);
+        margin-bottom: 1.5rem;
+        max-width: 80%;
+        padding: 1rem;
+    }
+
+    .nosotros-contenido-texto {
+        text-align: center;
+        padding-left: 0;
+        min-width: unset;
+    }
+
+    .nosotros-contenido-texto h3 {
+        text-align: center;
+    }
+
+    /* --- REGLA DE CONTACTO PARA MÓVIL (igual que antes) --- */
+    .contacto-layout {
+        flex-direction: column;
+        padding: 2rem;
+    }
+    .contacto-mapa-info {
+        border-right: none; 
+        padding-right: 0;
+        margin-bottom: 2.5rem; 
+    }
+    .contacto-formulario {
+        padding-left: 0;
+    }
+    
+    .contacto-mapa-info h3,
+    .contacto-formulario .seccion-subtitulo {
+        text-align: center; 
+    }
+}
+
+
+@media (max-width: 576px) {
+    .hero-contenido-inicio h1 {
+        font-size: 2.5rem;
+    }
+    .hero-inicio {
+        padding: 2rem 1rem;
+    }
+    .hero-imagen-decorativa {
+        max-width: 100%;
+    }
+
+    .nosotros-seccion {
+        padding: 1.5rem;
+    }
+    .nosotros-imagen {
+        max-width: 100%;
+    }
+    .nosotros-contenido-texto h3 {
+        font-size: 1.7rem;
+    }
+}
+/* =========================================
+   ESTILOS ESPECÍFICOS PARA ADMIN / LOGIN
+   ========================================= */
+
+/* --- Login --- */
+.login-wrapper {
+    min-height: 70vh; /* Centrado vertical */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: radial-gradient(circle at center, var(--color-acento-claro) 0%, var(--color-fondo) 70%);
+}
+
+.login-card {
+    background: var(--color-tarjeta);
+    padding: 3rem 2.5rem;
+    border-radius: 15px;
+    box-shadow: 0 15px 35px rgba(92, 75, 69, 0.1);
+    width: 100%;
+    max-width: 420px;
+    border: 1px solid var(--color-acento-claro);
+    text-align: center;
+}
+
+.login-header h2 {
+    font-family: var(--fuente-titulos);
+    color: var(--color-principal);
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.login-header p {
+    color: #888;
+    margin-bottom: 2rem;
+    font-size: 0.9rem;
+}
+
+/* --- Dashboard --- */
+.dashboard-container {
+    padding: 3rem 1rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.dashboard-welcome {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.dashboard-welcome h1 {
+    font-family: var(--fuente-titulos);
+    color: var(--color-texto);
+    font-size: 2.5rem;
+}
+
+.dashboard-welcome p {
+    color: var(--color-principal);
+    font-family: var(--fuente-cursiva);
+    font-size: 1.5rem;
+}
+
+.admin-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+}
+
+.admin-card {
+    background: var(--color-tarjeta);
+    padding: 2rem;
+    border-radius: 12px;
+    border: 1px solid var(--color-acento-claro);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.admin-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(92, 75, 69, 0.15);
+}
+
+.admin-card-icon {
+    font-size: 3rem;
+    color: var(--color-principal);
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.admin-card h3 {
+    font-family: var(--fuente-titulos);
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--color-texto);
+}
+
+.admin-card p {
+    font-size: 0.95rem;
+    color: #666;
+    margin-bottom: 1.5rem;
+}
+
+/* Estado deshabilitado para tarjetas */
+.admin-card.disabled {
+    opacity: 0.7;
+    background-color: #f9f9f9;
+    cursor: not-allowed;
+}
+
+.admin-card.disabled:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+/* Botones personalizados */
+.btn-admin {
+    display: inline-block;
+    padding: 0.8rem 1.5rem;
+    background-color: var(--color-principal);
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background 0.3s;
+    border: none;
+    font-family: var(--fuente-titulos);
+}
+
+.btn-admin:hover {
+    background-color: #a57c6b;
+    color: white;
+}
+
+.btn-admin-danger {
+    background-color: #fff;
+    color: #d9534f;
+    border: 1px solid #d9534f;
+    padding: 0.5rem 1.2rem;
+}
+
+.btn-admin-danger:hover {
+    background-color: #d9534f;
+    color: white;
+}
