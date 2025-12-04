@@ -3,49 +3,45 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session; // USAR ESTA IMPORTACIÓN
+use Illuminate\Support\Facades\DB;
 
 class LoginController extends Controller
 {
-    // Muestra el formulario de login
     public function showLoginForm()
     {
-        // Si ya está logueado, lo mandamos a inicio
-        if (Auth::check()) {
-            return redirect()->route('inicio');
-        }
         return view('login');
     }
 
-    // Procesa el inicio de sesión
     public function login(Request $request)
     {
-        // 1. Validamos que los campos no estén vacíos
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
-        ]);
+        $correo = $request->input('correo');
+        $password = $request->input('password');
 
-        // 2. Intentamos loguear (Auth::attempt encripta y compara automáticamente)
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
+        // Consulta manual
+        $usuario = DB::select("SELECT * FROM usuarios WHERE correo = ? AND password = ? AND activo = 'Si'", [$correo, $password]);
+
+        if (!empty($usuario)) {
+            // 1. Guardamos datos en sesión
+            Session::put('admin_session', $usuario[0]->nombre);
+            Session::put('id_usuario', $usuario[0]->id_usuario);
             
-            // Redirige a la página que intentó visitar o a 'inicio' por defecto
-            return redirect()->intended('inicio');
+            // 2. IMPORTANTE: Forzar el guardado de la sesión
+            Session::save();
+            
+            // 3. Redirigir al dashboard
+            return redirect()->route('admin.dashboard');
+        } else {
+            Session::flash('error', 'Credenciales incorrectas o usuario inactivo');
+            return redirect()->route('login');
         }
-
-        // 3. Si falla, regresa con error
-        return back()->withErrors([
-            'email' => 'Las credenciales no coinciden con nuestros registros.',
-        ])->onlyInput('email');
     }
 
-    // Cerrar sesión
-    public function logout(Request $request)
+    public function logout()
     {
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-        return redirect()->route('login');
+        Session::forget('admin_session');
+        Session::forget('id_usuario');
+        Session::save(); // Guardar el cambio al salir
+        return redirect()->route('inicio');
     }
 }

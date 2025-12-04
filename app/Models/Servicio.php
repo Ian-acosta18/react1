@@ -8,15 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Servicio extends Model
 {
     use HasFactory;
-
     protected $table = 'servicios';
     protected $primaryKey = 'id';
-
-protected $fillable = ['categoria_id', 'nombre_servicio', 'precio', 'imagen'];
-    // Relación Inversa: Un servicio pertenece a una categoría
-    public function categoria()
-    {
-        // CORRECCIÓN CLAVE: Usamos 'categoria_id' que es lo que está en la BD
-        return $this->belongsTo(Categoria::class, 'categoria_id', 'id'); 
-    }
+    
+    // NOTA: En tu base de datos la columna se llama 'iamgen' (error de dedo), 
+    // así que debemos respetarlo aquí.
+    protected $fillable = ['categoria_id', 'nombre_servicio', 'precio', 'imagen'];
 }

@@ -1,20 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
-// --- IMPORTACIÓN DE CONTROLADORES ---
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\LoginController;
-use App\Http\Controllers\CitasController;
-use App\Http\Controllers\AdminProductosController; 
-use App\Http\Controllers\AdminServiciosController; 
-use App\Http\Controllers\AdminInstalacionesController;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes (Rutas de la Aplicación)
-|--------------------------------------------------------------------------
-*/
+use App\Http\Controllers\AdminServiciosController;
 
 // ==========================================
 // 1. RUTAS PÚBLICAS (CLIENTES)
@@ -31,52 +20,38 @@ Route::get('/reservaciones', [PageController::class, 'reservaciones'])->name('re
 Route::post('/reservar', [PageController::class, 'storeReserva'])->name('reserva.store');
 Route::post('/contacto', [PageController::class, 'storeContacto'])->name('contacto.store');
 
-
 // ==========================================
-// 2. RUTAS DE AUTENTICACIÓN (LOGIN)
+// 2. LOGIN Y AUTENTICACIÓN
 // ==========================================
-// Formulario de Login
-Route::get('/administrador', [LoginController::class, 'showLoginForm'])->name('login'); 
-// Procesar Login
+// Ruta para mostrar el formulario (alias 'login' para el middleware)
+Route::get('/administrador', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/validar-login', [LoginController::class, 'login'])->name('validar');
-// Cerrar Sesión
 Route::get('/cerrar-sesion', [LoginController::class, 'logout'])->name('cerrarsesion');
 
-// Ruta de seguridad: Si alguien intenta ir a "/login", lo mandamos a "/administrador"
-Route::get('/login', function () {
-    return redirect()->route('login');
-});
-
 
 // ==========================================
-// 3. RUTAS PROTEGIDAS (ADMINISTRACIÓN)
+// 3. ADMINISTRACIÓN (PROTEGIDAS)
 // ==========================================
-// Todo lo que esté aquí requiere haber iniciado sesión (middleware 'auth')
-Route::middleware(['auth'])->prefix('admin')->group(function () {
+// Usamos el middleware 'validaradmin' que creamos
+Route::middleware(['validaradmin'])->prefix('admin')->name('admin.')->group(function () {
 
-    // --- DASHBOARD PRINCIPAL ---
+    // Dashboard
     Route::get('/dashboard', function () {
         return view('admin.dashboard');
-    })->name('admin.dashboard');
+    })->name('dashboard');
 
-    // --- CRUD DE PRODUCTOS ---
-    Route::resource('productos', AdminProductosController::class);
+    // --- CRUD SERVICIOS (Estilo ProyAplicWeb) ---
+    Route::get('/servicios', [AdminServiciosController::class, 'reporte'])->name('servicios.reporte');
     
-    // --- CRUD DE SERVICIOS ---
-    Route::resource('servicios', AdminServiciosController::class);
+    // Alta
+    Route::get('/servicios/alta', [AdminServiciosController::class, 'alta'])->name('servicios.alta');
+    Route::post('/servicios/guardar', [AdminServiciosController::class, 'guardar'])->name('servicios.guardar');
     
-    // --- CRUD DE INSTALACIONES ---
-    Route::resource('instalaciones', AdminInstalacionesController::class);
+    // Edición
+    Route::get('/servicios/editar/{id}', [AdminServiciosController::class, 'editar'])->name('servicios.editar');
+    Route::post('/servicios/actualizar', [AdminServiciosController::class, 'actualizar'])->name('servicios.actualizar');
+    
+    // Eliminar
+    Route::get('/servicios/eliminar/{id}', [AdminServiciosController::class, 'eliminar'])->name('servicios.eliminar');
 
-    // --- GESTIÓN DE CITAS ---
-    // Reporte general
-    Route::get('/citas', [CitasController::class, 'reportecitas'])->name('reportecitas');
-    // Editar cita
-    Route::get('/citas/editar/{id}', [CitasController::class, 'editacita'])->name('editacita');
-    Route::post('/citas/actualizar', [CitasController::class, 'actualizacita'])->name('actualizacita');
-    // Eliminar cita
-    Route::get('/citas/eliminar/{id}', [CitasController::class, 'eliminacita'])->name('eliminacita');
 });
-
-
-

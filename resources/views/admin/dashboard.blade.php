@@ -1,66 +1,30 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="dashboard-container">
+<div class="container" style="margin: 50px auto; text-align: center;">
+    <h1>Bienvenido, {{ Session::get('admin_session') }}</h1>
+    <p class="lead">Panel de Administración Aura Spa</p>
+    <hr>
     
-    <div class="dashboard-welcome">
-        <h1>Bienvenido, {{ Session::get('admin_nombre') ?? 'Administrador' }}</h1>
-        <p>Panel de Control AURA SPA</p>
-    </div>
-    
-    <div class="admin-grid">
-        
-        <!-- Tarjeta 1: Servicios -->
-        <div class="admin-card">
-            <div>
-                <span class="admin-card-icon">support_agent</span>
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <div class="card p-4 shadow-sm">
                 <h3>Servicios</h3>
-                <p>Gestiona el catálogo de tratamientos y precios.</p>
+                <p>Gestionar precios, categorías y fotos.</p>
+                <a href="{{ route('admin.servicios.reporte') }}" class="btn btn-dark">Administrar</a>
             </div>
-            <a href="{{ route('servicios.index') }}" class="btn-admin">Administrar</a>
         </div>
 
-        <!-- Tarjeta 2: Productos -->
-        <div class="admin-card">
-            <div>
-                <span class="admin-card-icon">shopping_bag</span>
+        <div class="col-md-4">
+            <div class="card p-4 shadow-sm" style="opacity: 0.5;">
                 <h3>Productos</h3>
-                <p>Control de inventario y stock de productos.</p>
+                <p>Próximamente...</p>
+                <button class="btn btn-secondary" disabled>En construcción</button>
             </div>
-            <a href="{{ route('productos.index') }}" class="btn-admin">Administrar</a>
         </div>
-
-        <!-- Tarjeta 3: Instalaciones -->
-        <div class="admin-card">
-            <div>
-                <span class="admin-card-icon">storefront</span>
-                <h3>Instalaciones</h3>
-                <p>Actualiza las fotos de las áreas del Spa.</p>
-            </div>
-            <a href="{{ route('instalaciones.index') }}" class="btn-admin">Administrar</a>
-        </div>
-
-         <!-- Tarjeta 4: Citas -->
-         <div class="admin-card">
-            <div>
-                <span class="admin-card-icon">calendar_month</span>
-                <h3>Citas</h3>
-                <p>Ver solicitudes de reservación.</p>
-            </div>
-            <a href="{{ route('reportecitas') }}" class="btn-admin">Ver Citas</a>
-        </div>
-
     </div>
-
-    <div style="text-align: center; margin-top: 4rem;">
-        <a href="{{ route('cerrarsesion') }}" class="btn-admin-danger">Cerrar Sesión</a>
-    </div>
+    
+    <br><br>
+    <a href="{{ route('cerrarsesion') }}" class="btn btn-danger">Cerrar Sesión</a>
 </div>
-
-<!-- Iconos de Google -->
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-<style>
-    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 48; }
-    .admin-card-icon { font-family: 'Material Symbols Outlined'; font-size: 3rem; display: block; margin-bottom: 10px; color: var(--color-principal); }
-</style>
 @endsection

@@ -63,7 +63,5 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
 
-        // --- ESTA ES LA LÍNEA QUE TE FALTA ---
-        'validaadmin' => \App\Http\Middleware\ValidarAdmin::class,
-    ];
+       'validaradmin' => \App\Http\Middleware\ValidarAdmin::class,    ];
 }
