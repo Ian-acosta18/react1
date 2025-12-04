@@ -78,15 +78,36 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/citas/eliminar/{id}', [CitasController::class, 'eliminacita'])->name('eliminacita');
 });
 
+// ==========================================
+// RUTA DE RECUPERACIÓN DE ADMIN (Borrar al terminar)
+// ==========================================
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
-Route::get('/crear-usuario', function() {
-    User::create([
-        'name' => 'Administrador',
-        'email' => 'admin@test.com',
-        'password' => '12345678' // Laravel lo encripta automático por tu modelo User
-    ]);
-    return "Usuario creado: admin@test.com / 12345678";
+Route::get('/generar-admin', function () {
+    // Datos del usuario que queremos arreglar/crear
+    $email = 'admin@aura.com';
+    $pass  = '12345678'; // Esta será tu contraseña
+
+    // Buscamos si ya existe el usuario por su correo
+    $user = User::where('correo', $email)->first();
+
+    if (!$user) {
+        $user = new User();
+        $user->correo = $email;
+    }
+
+    // Actualizamos los datos asegurando el Hash
+    $user->nombre = 'Administrador General';
+    $user->password = Hash::make($pass); // <--- ESTO SOLUCIONA EL ERROR
+    
+    // Solo si tu tabla tiene la columna 'activo', descomenta esto:
+    // $user->activo = 1; 
+
+    $user->save();
+
+    return "<h1>¡Éxito!</h1>
+            <p>Usuario: <b>$email</b><br>Contraseña: <b>$pass</b></p>
+            <p><a href='/administrador'>Ir al Login</a></p>";
 });
 
