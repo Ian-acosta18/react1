@@ -127,11 +127,7 @@
     <footer>
         <div class="footer-content">
             <p>"Luce radiante, siéntete tú"</p>
-            <div class="social-links">
-                <a href="#">Facebook</a>
-                <a href="#">Instagram</a>
-                <a href="#">WhatsApp</a>
-            </div>
+            
             <p>© {{ date("Y") }} AURA BEAUTY & SPA. Todos los derechos reservados.</p>
         </div>
     </footer>
