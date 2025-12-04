@@ -79,14 +79,18 @@ class AdminServiciosController extends Controller
     // 4. EDITAR (VISTA)
     public function editar($id)
     {
+        // Buscamos el servicio por ID
         $servicio = DB::select("SELECT * FROM servicios WHERE id = ?", [$id]);
+        
+        // Buscamos las categorías para llenar el select
         $categorias = DB::select("SELECT * FROM categorias ORDER BY nombre_categoria ASC");
 
         if (empty($servicio)) {
             return redirect()->route('admin.servicios.reporte');
         }
 
-        return view('admin.servicios.edita') // Asegúrate de que tu vista se llame 'edita' o 'edit'
+        // ATENCIÓN: Aquí llamamos a 'admin.servicios.edit' (coincide con el nombre del archivo)
+        return view('admin.servicios.edit')
             ->with('servicio', $servicio[0])
             ->with('categorias', $categorias);
     }
@@ -94,6 +98,7 @@ class AdminServiciosController extends Controller
     // 5. ACTUALIZAR (ACCION)
     public function actualizar(Request $request)
     {
+        // 1. Validamos los datos
         $this->validate($request, [
             'id' => 'required',
             'nombre_servicio' => 'required',
@@ -101,23 +106,30 @@ class AdminServiciosController extends Controller
             'categoria_id' => 'required'
         ]);
 
+        // 2. Buscamos el servicio usando el Modelo (más fácil para editar)
         $servicio = Servicio::find($request->id);
         
+        // 3. ¿Subieron nueva foto?
         $file = $request->file('foto');
         if ($file) {
+            // Creamos nombre único
             $img = 'servicio_' . time() . '.' . $file->getClientOriginalExtension();
+            // Subimos la imagen a public/imagen
             $file->move(public_path('imagen'), $img);
-            
-            // CORREGIDO: propiedad imagen
+            // Actualizamos el campo en la BD
             $servicio->imagen = 'imagen/' . $img; 
         }
+        // Si no subieron foto, NO tocamos $servicio->imagen, se queda la anterior.
 
+        // 4. Actualizamos el resto de campos
         $servicio->nombre_servicio = $request->nombre_servicio;
         $servicio->precio = $request->precio;
         $servicio->categoria_id = $request->categoria_id;
+        
+        // 5. Guardamos
         $servicio->save();
 
-        Session::flash('mensaje', "El servicio ha sido actualizado.");
+        Session::flash('mensaje', "El servicio ha sido actualizado correctamente.");
         return redirect()->route('admin.servicios.reporte');
     }
 
