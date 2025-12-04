@@ -13,10 +13,10 @@ class Categoria extends Model
     protected $primaryKey = 'id';
     protected $fillable = ['nombre_categoria'];
 
-    // ESTA ES LA FUNCIÓN QUE FALTABA
-    public function servicios()
+   public function servicios()
     {
         // Una categoría TIENE MUCHOS servicios
+        // Relación: 'categoria_id' es la llave foránea en la tabla 'servicios'
         return $this->hasMany(Servicio::class, 'categoria_id', 'id');
     }
 }

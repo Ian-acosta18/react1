@@ -8,10 +8,10 @@
             <p class="lead text-muted">Explora nuestra variedad de tratamientos diseñados para ti</p>
         </div>
 
-        {{-- Bucle Principal: Recorremos las CATEGORÍAS --}}
+        {{-- BUCLE PRINCIPAL: Recorremos las CATEGORÍAS --}}
         @foreach ($categorias as $categoria)
             
-            {{-- Solo mostramos la categoría si tiene servicios dentro --}}
+            {{-- Solo mostramos la categoría si tiene servicios registrados --}}
             @if($categoria->servicios->count() > 0)
                 <div class="categoria-wrapper mb-5">
                     <h3 class="mb-4 pb-2 border-bottom" style="color: #5c4b45; font-family: 'Playfair Display', serif;">
@@ -19,7 +19,7 @@
                     </h3>
 
                     <div class="row">
-                        {{-- Bucle Secundario: Recorremos los SERVICIOS de esa categoría --}}
+                        {{-- BUCLE SECUNDARIO: Recorremos los SERVICIOS de esa categoría --}}
                         @foreach ($categoria->servicios as $servicio)
                             <div class="col-md-4 mb-4">
                                 <div class="card h-100 shadow-sm border-0 serv-card">
@@ -52,7 +52,7 @@
                                                 ${{ number_format($servicio->precio, 2) }}
                                             </p>
                                             
-                                            <a href="{{ route('reservaciones') }}" class="btn btn-dark btn-sm mt-2" style="border-radius: 20px; padding: 5px 20px;">
+                                            <a href="{{ route('reservaciones') }}" class="btn btn-dark btn-sm mt-2" style="border-radius: 20px; padding: 5px 20px; background-color: #B98D7B; border:none;">
                                                 Reservar
                                             </a>
                                         </div>

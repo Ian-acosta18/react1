@@ -16,6 +16,5 @@ class Servicio extends Model
     // Relación inversa (opcional pero recomendada)
     public function categoria()
     {
-        return $this->belongsTo(Categoria::class, 'categoria_id', 'id');
-    }
+    return $this->belongsTo(Categoria::class, 'categoria_id', 'id');            }
 }
