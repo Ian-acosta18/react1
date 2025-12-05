@@ -20,8 +20,10 @@
         </div>
         @endif
 
-        <form action="{{ route('admin.productos.actualizar', ['id' => $producto->id]) }}" method="POST" enctype="multipart/form-data" class="premium-form">
+        <form action="{{ route('admin.productos.actualizar') }}" method="POST" enctype="multipart/form-data" class="premium-form">
             @csrf
+            {{-- ID Oculto --}}
+            <input type="hidden" name="id" value="{{ $producto->id }}">
             
             <div class="form-group-premium">
                 <label for="nombre">Nombre del Producto</label>
@@ -52,6 +54,18 @@
                     </div>
                 </div>
             </div>
+
+            {{-- --- NUEVO CAMPO: ESTADO --- --}}
+            <div class="form-group-premium mt-3">
+                <label for="activo">Estado del Producto</label>
+                <div class="input-with-icon">
+                    <select name="activo" id="activo" class="input-premium">
+                        <option value="1" {{ $producto->activo ? 'selected' : '' }}>🟢 Activo (Visible)</option>
+                        <option value="0" {{ !$producto->activo ? 'selected' : '' }}>🔴 Inactivo (Oculto)</option>
+                    </select>
+                </div>
+            </div>
+            {{-- --------------------------- --}}
 
             <div class="form-group-premium mt-4">
                 <label>Gestión de Imagen</label>

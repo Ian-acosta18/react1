@@ -50,42 +50,45 @@
                 </div>
 
                 <div class="form-col">
-                    <label for="stock_selector">Stock (Cantidad)</label>
+                    <label for="stock_selector">Stock</label>
                     <div class="input-with-icon">
-                        
+                        {{-- Mantenemos tu lógica de stock --}}
                         <select id="stock_selector" class="input-premium" style="margin-bottom: 10px;">
-                            <option value="">Selecciona una cantidad</option>
-                            @foreach($stock_opciones as $opcion)
-                                <option value="{{ $opcion->cantidad }}">{{ $opcion->cantidad }}</option>
-                            @endforeach
+                            <option value="">Selecciona cantidad</option>
+                            @if(isset($stock_opciones))
+                                @foreach($stock_opciones as $opcion)
+                                    <option value="{{ $opcion->cantidad }}">{{ $opcion->cantidad }}</option>
+                                @endforeach
+                            @endif
                             <option value="otro">Otro (Manual)</option>
                         </select>
 
-                        <input type="number" 
-                               id="stock" 
-                               name="stock" 
-                               class="input-premium" 
-                               value="{{ old('stock') }}" 
-                               placeholder="Ingresa la cantidad manual"
-                               style="display: none;">
+                        <input type="number" id="stock" name="stock" class="input-premium" value="{{ old('stock') }}" placeholder="Cantidad manual" style="display: none;">
                     </div>
                 </div>
             </div>
 
-            <div class="form-group-premium">
-                {{-- CORRECCIÓN: Cambiado 'for' a 'imagen' --}}
+            {{-- --- NUEVO CAMPO: ESTADO --- --}}
+            <div class="form-group-premium mt-3">
+                <label for="activo">Estado del Producto</label>
+                <div class="input-with-icon">
+                    <select name="activo" id="activo" class="input-premium">
+                        <option value="1" selected>🟢 Activo (Visible al público)</option>
+                        <option value="0">🔴 Inactivo (Oculto)</option>
+                    </select>
+                </div>
+            </div>
+            {{-- --------------------------- --}}
+
+            <div class="form-group-premium mt-3">
                 <label for="imagen">Imagen del Producto</label>
-                
                 <div class="upload-container-clean">
                     <div class="upload-icon">
                         <svg width="30" height="30" fill="none" stroke="#B98D7B" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                     </div>
                     <div class="upload-input-group">
                         <p class="upload-instruction">Selecciona un archivo de tu equipo:</p>
-                        
-                        {{-- CORRECCIÓN CRÍTICA: Cambiado name="foto" a name="imagen" --}}
                         <input type="file" id="imagen" name="imagen" class="form-control" style="border: 1px solid #e0e0e0; padding: 0.5rem; border-radius: 8px;">
-                        
                     </div>
                 </div>
             </div>
@@ -98,37 +101,13 @@
     </div>
 </div>
 
+{{-- Estilos y Scripts originales se mantienen --}}
 <style>
-    .upload-container-clean {
-        display: flex;
-        align-items: center;
-        gap: 1.5rem;
-        padding: 1.5rem;
-        background-color: #fafafa;
-        border: 1px dashed #dcdcdc;
-        border-radius: 12px;
-        transition: border-color 0.3s ease;
-    }
-    .upload-container-clean:hover {
-        border-color: var(--color-principal, #B98D7B);
-        background-color: #fff;
-    }
-    .upload-icon {
-        background: #F9F3EC;
-        padding: 10px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    .upload-input-group {
-        flex-grow: 1;
-    }
-    .upload-instruction {
-        margin: 0 0 0.5rem 0;
-        font-size: 0.9rem;
-        color: #666;
-    }
+    .upload-container-clean { display: flex; align-items: center; gap: 1.5rem; padding: 1.5rem; background-color: #fafafa; border: 1px dashed #dcdcdc; border-radius: 12px; transition: border-color 0.3s ease; }
+    .upload-container-clean:hover { border-color: var(--color-principal, #B98D7B); background-color: #fff; }
+    .upload-icon { background: #F9F3EC; padding: 10px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .upload-input-group { flex-grow: 1; }
+    .upload-instruction { margin: 0 0 0.5rem 0; font-size: 0.9rem; color: #666; }
 </style>
 
 <script>
@@ -136,11 +115,11 @@
         const stockSelector = document.getElementById('stock_selector');
         const stockInput = document.getElementById('stock');
         
-        const predefinidos = @json($stock_opciones->pluck('cantidad')); 
+        // Si no hay opciones, pasamos array vacío para evitar error de JS
+        const predefinidos = @json(isset($stock_opciones) ? $stock_opciones->pluck('cantidad') : []);
 
         if (stockInput.value) {
             const valorGuardado = parseInt(stockInput.value);
-            
             if (predefinidos.includes(valorGuardado)) {
                 stockSelector.value = valorGuardado;
                 stockInput.style.display = 'none';
@@ -152,15 +131,10 @@
 
         stockSelector.addEventListener('change', function() {
             const seleccion = this.value;
-
             if (seleccion === 'otro') {
                 stockInput.style.display = 'block';
                 stockInput.value = ''; 
-                stockInput.placeholder = "Escribe la cantidad...";
                 stockInput.focus();
-            } else if (seleccion === "") {
-                stockInput.style.display = 'none';
-                stockInput.value = '';
             } else {
                 stockInput.style.display = 'none';
                 stockInput.value = seleccion; 
