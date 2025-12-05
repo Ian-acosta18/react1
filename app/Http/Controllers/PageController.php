@@ -8,6 +8,7 @@ use App\Models\Reserva;
 use App\Models\Servicio;
 use App\Models\Contacto;
 use App\Models\Productos;
+use App\Models\Instalaciones;
 
 class PageController extends Controller
 {
@@ -102,8 +103,12 @@ class PageController extends Controller
     }
 
     public function instalaciones() {
-        // Importante: El nombre debe coincidir EXACTAMENTE con el archivo.
-        // Tu archivo se llama 'Instalaciones.blade.php' (con I mayúscula).
-        return view('pages.Instalaciones'); 
+        // 1. Buscamos las instalaciones en la BD (Activas y Ordenadas)
+        $instalaciones = Instalaciones::where('activo', true)
+                                      ->orderBy('orden', 'asc')
+                                      ->get();
+
+        // 2. ¡IMPORTANTE! Usamos compact() para enviar la variable a la vista
+        return view('pages.Instalaciones', compact('instalaciones')); 
     }
 }
