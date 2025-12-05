@@ -26,8 +26,7 @@
                     <h3 style="color: #5c4b45;">Productos</h3>
                     <p class="text-muted">Bolsos, Cremas, Accesorios...</p>
                     <hr>
-                    <a href="#" class="btn btn-secondary w-100 disabled">Próximamente</a>
-                </div>
+                    <a href="{{ route('admin.productos.reporte') }}" class="btn btn-primary">Entrar a Productos</a>                </div>
             </div>
         </div>
 

@@ -4,92 +4,128 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Productos;
+use Session;
+use File;
 
 class AdminProductosController extends Controller
 {
-    public function index() {
-        $productos = Productos::all();
-        return view('admin.productos.index', compact('productos'));
+    // 1. REPORTE
+    public function reporte()
+    {
+        $productos = Productos::orderBy('nombre', 'ASC')->get();
+        return view('admin.productos.reporte')->with('productos', $productos);
     }
 
-    public function create() {
-        return view('admin.productos.create');
+    // 2. ALTA (VISTA)
+    public function alta()
+    {
+        return view('admin.productos.alta');
     }
 
-    public function store(Request $request) {
-        $request->validate([
-            'nombre' => 'required',
-            'precio' => 'required|numeric',
-            'imagen' => 'required|image'
+    // 3. GUARDAR (ACCION)
+    public function guardar(Request $request)
+    {
+        $this->validate($request, [
+            'nombre'      => 'required',
+            'descripcion' => 'required',
+            'precio'      => 'required|numeric',
+            'stock'       => 'required|numeric',
+            'foto'        => 'image|mimes:jpg,jpeg,png'
         ]);
 
-        $prod = new Productos();
-        $prod->nombre = $request->nombre;
-        $prod->descripcion = $request->descripcion;
-        $prod->precio = $request->precio;
-        $prod->stock = $request->stock ?? 0;
+        $ruta_imagen = '';
 
-        if ($request->hasFile('imagen')) {
-            $file = $request->file('imagen');
-            $filename = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('imagen'), $filename);
-            $prod->imagen = 'imagen/' . $filename;
+        if ($request->hasFile('foto')) {
+            $file = $request->file('foto');
+            // Nombre único: producto_timestamp.ext
+            $img = 'producto_' . time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('imagen'), $img);
+            $ruta_imagen = 'imagen/' . $img;
         }
 
-        $prod->save();
-        return redirect()->route('productos.index')->with('success', 'Producto creado');
+        $producto = new Productos;
+        $producto->nombre      = $request->nombre;
+        $producto->descripcion = $request->descripcion;
+        $producto->precio      = $request->precio;
+        $producto->stock       = $request->stock;
+        $producto->imagen      = $ruta_imagen;
+        $producto->activo      = 1; // Por defecto activo
+        
+        $producto->save();
+
+        Session::flash('mensaje', "El producto $request->nombre ha sido creado.");
+        return redirect()->route('admin.productos.reporte');
     }
 
-    public function edit($id) {
+    // 4. EDITAR (VISTA)
+    public function editar($id)
+    {
         $producto = Productos::find($id);
-        return view('admin.productos.edit', compact('producto'));
+
+        if (!$producto) {
+            Session::flash('mensaje', "El producto no existe.");
+            return redirect()->route('admin.productos.reporte');
+        }
+
+        return view('admin.productos.edit')->with('producto', $producto);
     }
 
-    
-    public function update(Request $request, $id) {
-    $prod = Productos::find($id);
+    // 5. ACTUALIZAR (ACCION)
+    public function actualizar(Request $request)
+    {
+        $this->validate($request, [
+            'id'          => 'required',
+            'nombre'      => 'required',
+            'descripcion' => 'required',
+            'precio'      => 'required|numeric',
+            'stock'       => 'required|numeric',
+            'foto'        => 'nullable|image|mimes:jpg,jpeg,png'
+        ]);
 
-    // 1. Validar los datos antes de procesar
-    $request->validate([
-        'nombre' => 'required',
-        'precio' => 'required|numeric',
-        'imagen' => 'nullable|image' // Nullable porque puede que no la cambie
-    ]);
+        $producto = Productos::find($request->id);
+        
+        if (!$producto) {
+            return redirect()->route('admin.productos.reporte');
+        }
 
-    if ($request->hasFile('imagen')) {
-    // Borrar imagen anterior si existe
-    $rutaAnterior = public_path($prod->imagen);
-    if (file_exists($rutaAnterior)) {
-        @unlink($rutaAnterior); // @ evita error si el archivo no existe
+        if ($request->hasFile('foto')) {
+            // Borrar foto anterior
+            if ($producto->imagen && File::exists(public_path($producto->imagen))) {
+                File::delete(public_path($producto->imagen));
+            }
+            // Subir nueva
+            $file = $request->file('foto');
+            $img = 'producto_' . time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('imagen'), $img);
+            $producto->imagen = 'imagen/' . $img; 
+        }
+
+        $producto->nombre      = $request->nombre;
+        $producto->descripcion = $request->descripcion;
+        $producto->precio      = $request->precio;
+        $producto->stock       = $request->stock;
+        
+        $producto->save();
+
+        Session::flash('mensaje', "El producto ha sido actualizado correctamente.");
+        return redirect()->route('admin.productos.reporte');
     }
 
-    $file = $request->file('imagen');
-    $filename = time() . '_' . $file->getClientOriginalName();
-    $file->move(public_path('imagen'), $filename);
-    $prod->imagen = 'imagen/' . $filename;
-}
-    
-    $prod->nombre = $request->nombre;
-    $prod->descripcion = $request->descripcion;
-    $prod->precio = $request->precio;
-    $prod->stock = $request->stock;
+    // 6. ELIMINAR (ACCION)
+    public function eliminar($id)
+    {
+        $producto = Productos::find($id);
 
-    // ... lógica de imagen (ver punto 2) ...
-
-    $prod->save();
-    return redirect()->route('productos.index')->with('success', 'Producto actualizado');
-}
-
-    public function destroy($id) {
-    $prod = Productos::find($id);
-    
-    // Borrar imagen del servidor
-    $rutaImagen = public_path($prod->imagen);
-    if (file_exists($rutaImagen)) {
-        @unlink($rutaImagen);
-    }
-
-    $prod->delete();
-    return back()->with('success', 'Producto eliminado');
+        if ($producto) {
+            if ($producto->imagen && File::exists(public_path($producto->imagen))) {
+                File::delete(public_path($producto->imagen));
+            }
+            $producto->delete();
+            Session::flash('mensaje', "Producto eliminado correctamente.");
+        } else {
+            Session::flash('mensaje', "No se pudo encontrar el producto.");
+        }
+        
+        return redirect()->route('admin.productos.reporte');
     }
 }

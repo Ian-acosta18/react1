@@ -47,4 +47,13 @@ Route::get('/servicios', [AdminServiciosController::class, 'reporte'])->name('se
     Route::get('/servicios/editar/{id}', [AdminServiciosController::class, 'editar'])->name('servicios.editar');
     Route::post('/servicios/actualizar', [AdminServiciosController::class, 'actualizar'])->name('servicios.actualizar');
     Route::get('/servicios/eliminar/{id}', [AdminServiciosController::class, 'eliminar'])->name('servicios.eliminar');
+
+    Route::get('/productos', [App\Http\Controllers\AdminProductosController::class, 'reporte'])->name('productos.reporte');
+    Route::get('/productos/alta', [App\Http\Controllers\AdminProductosController::class, 'alta'])->name('productos.alta');
+    Route::post('/productos/guardar', [App\Http\Controllers\AdminProductosController::class, 'guardar'])->name('productos.guardar');
+    Route::get('/productos/editar/{id}', [App\Http\Controllers\AdminProductosController::class, 'editar'])->name('productos.editar');
+    Route::post('/productos/actualizar', [App\Http\Controllers\AdminProductosController::class, 'actualizar'])->name('productos.actualizar');
+    Route::get('/productos/eliminar/{id}', [App\Http\Controllers\AdminProductosController::class, 'eliminar'])->name('productos.eliminar');
+
+
 });
