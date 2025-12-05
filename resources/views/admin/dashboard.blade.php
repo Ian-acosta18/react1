@@ -37,7 +37,10 @@
                     <h3 style="color: #5c4b45;">Instalaciones</h3>
                     <p class="text-muted">Áreas del Spa, Cabinas...</p>
                     <hr>
-                    <a href="#" class="btn btn-secondary w-100 disabled">Próximamente</a>
+                    {{-- AQUÍ ESTÁ EL CAMBIO: Botón activo apuntando a la ruta 'admin.instalaciones.reporte' --}}
+                    <a href="{{ route('admin.instalaciones.reporte') }}" class="btn btn-block w-100" style="background-color: #B98D7B; color: white;">
+                        Entrar a Instalaciones
+                    </a>
                 </div>
             </div>
         </div>
