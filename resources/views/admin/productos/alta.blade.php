@@ -73,7 +73,8 @@
             </div>
 
             <div class="form-group-premium">
-                <label for="foto">Imagen del Producto</label>
+                {{-- CORRECCIÓN: Cambiado 'for' a 'imagen' --}}
+                <label for="imagen">Imagen del Producto</label>
                 
                 <div class="upload-container-clean">
                     <div class="upload-icon">
@@ -81,7 +82,10 @@
                     </div>
                     <div class="upload-input-group">
                         <p class="upload-instruction">Selecciona un archivo de tu equipo:</p>
-                        <input type="file" id="foto" name="foto" class="form-control" style="border: 1px solid #e0e0e0; padding: 0.5rem; border-radius: 8px;">
+                        
+                        {{-- CORRECCIÓN CRÍTICA: Cambiado name="foto" a name="imagen" --}}
+                        <input type="file" id="imagen" name="imagen" class="form-control" style="border: 1px solid #e0e0e0; padding: 0.5rem; border-radius: 8px;">
+                        
                     </div>
                 </div>
             </div>
@@ -132,14 +136,9 @@
         const stockSelector = document.getElementById('stock_selector');
         const stockInput = document.getElementById('stock');
         
-        // Creamos un array con los valores que vienen de la BD para validación en JS
-        // Usamos la directiva de Blade para pasar los datos de PHP a JS
         const predefinidos = @json($stock_opciones->pluck('cantidad')); 
-        // El resultado será algo como: [10, 20, 30, 40, 50, 100]
 
-        // 1. Lógica al cargar (por si hay errores de validación y regresa con old('stock'))
         if (stockInput.value) {
-            // Convertimos a entero para comparar con seguridad
             const valorGuardado = parseInt(stockInput.value);
             
             if (predefinidos.includes(valorGuardado)) {
@@ -151,7 +150,6 @@
             }
         }
 
-        // 2. Evento cambio en el select
         stockSelector.addEventListener('change', function() {
             const seleccion = this.value;
 
@@ -169,7 +167,6 @@
             }
         });
 
-        // 3. Si escribe manualmente, aseguramos que el select siga en 'otro'
         stockInput.addEventListener('input', function() {
             const valor = parseInt(this.value);
             if (!predefinidos.includes(valor)) {
