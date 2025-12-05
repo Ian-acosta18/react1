@@ -10,14 +10,19 @@ class Productos extends Model
     use HasFactory;
 
     protected $table = 'productos';
-    protected $primaryKey = 'id';
-    
-    // Campos que permitimos asignar masivamente
-    protected $fillable = ['nombre', 'descripcion', 'precio', 'imagen', 'stock', 'activo'];
 
-    protected $casts = [
-        'precio' => 'decimal:2',
-        'activo' => 'boolean',
-        'stock'  => 'integer',
+    protected $fillable = [
+        'nombre',
+        'descripcion',
+        'precio',
+        'stock',
+        'imagen',
+        'activo' // <--- NUEVO CAMPO
     ];
+
+    // Scope para filtrar solo los activos (útil para la vista pública)
+    public function scopeActivos($query)
+    {
+        return $query->where('activo', true);
+    }
 }
