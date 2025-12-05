@@ -4,21 +4,24 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Productos;
+use File; // Importante para borrar imágenes
 
 class AdminProductosController extends Controller
 {
+    // 1. MOSTRAR LISTA (Igual que Servicios)
     public function index() {
-        // Obtenemos todos los productos
         $productos = Productos::all();
-        // Asegúrate que tu vista exista en: resources/views/admin/productos/index.blade.php
-        // Si tu vista se llama 'reporte.blade.php', cambia 'index' por 'reporte' abajo.
-        return view('admin.productos.index', compact('productos'));
+        // CORRECCIÓN CLAVE: Cambiamos 'admin.productos.index' por 'admin.productos.reporte'
+        // Esto cargará la vista que tiene el diseño de tabla idéntico a Servicios.
+        return view('admin.productos.reporte', compact('productos'));
     }
 
+    // 2. FORMULARIO DE ALTA
     public function create() {
-        return view('admin.productos.create');
+        return view('admin.productos.alta'); // Asegúrate de que la vista se llame alta.blade.php
     }
 
+    // 3. GUARDAR PRODUCTO
     public function store(Request $request) {
         $request->validate([
             'nombre' => 'required',
@@ -41,15 +44,17 @@ class AdminProductosController extends Controller
 
         $prod->save();
         
-        // CORRECCIÓN: Redirigir a la ruta correcta definida en web.php
-        return redirect()->route('admin.productos.reporte')->with('success', 'Producto creado');
+        // CORRECCIÓN REDIRECCIÓN: Te devuelve a la lista correcta
+        return redirect()->route('admin.productos.reporte')->with('mensaje', 'Producto creado exitosamente');
     }
 
+    // 4. FORMULARIO DE EDICIÓN
     public function edit($id) {
         $producto = Productos::find($id);
         return view('admin.productos.edit', compact('producto'));
     }
 
+    // 5. ACTUALIZAR PRODUCTO
     public function update(Request $request, $id) {
         $prod = Productos::find($id);
 
@@ -60,7 +65,7 @@ class AdminProductosController extends Controller
         ]);
 
         if ($request->hasFile('imagen')) {
-            // Borrar imagen anterior si existe
+            // Borrar imagen anterior
             if ($prod->imagen && file_exists(public_path($prod->imagen))) {
                 @unlink(public_path($prod->imagen));
             }
@@ -78,21 +83,21 @@ class AdminProductosController extends Controller
 
         $prod->save();
 
-        // CORRECCIÓN: Redirigir a la ruta correcta definida en web.php
-        return redirect()->route('admin.productos.reporte')->with('success', 'Producto actualizado');
+        // CORRECCIÓN REDIRECCIÓN
+        return redirect()->route('admin.productos.reporte')->with('mensaje', 'Producto actualizado exitosamente');
     }
 
+    // 6. ELIMINAR PRODUCTO
     public function destroy($id) {
         $prod = Productos::find($id);
         
         if ($prod) {
-            // Borrar imagen del servidor
             if ($prod->imagen && file_exists(public_path($prod->imagen))) {
                 @unlink(public_path($prod->imagen));
             }
             $prod->delete();
         }
         
-        return back()->with('success', 'Producto eliminado');
+        return redirect()->route('admin.productos.reporte')->with('mensaje', 'Producto eliminado');
     }
 }
