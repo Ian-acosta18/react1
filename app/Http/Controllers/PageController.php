@@ -3,19 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-// Mantenemos esta línea por si necesitas usar SQL directo en el futuro, 
-// aunque para 'servicios' usaremos Eloquent.
-use Illuminate\Support\Facades\DB;
-
 use App\Models\Categoria;
 use App\Models\Reserva;
 use App\Models\Servicio;
 use App\Models\Contacto;
 use App\Models\Productos;
-
-// Importamos las Clases de Solicitud (Requests) para validación
-use App\Http\Requests\StoreReservaRequest;
-use App\Http\Requests\StoreContactoRequest;
 
 class PageController extends Controller
 {
@@ -23,16 +15,12 @@ class PageController extends Controller
         return view('pages.inicio');
     }
 
-    /*
-     * MÉTODO SERVICIOS CORREGIDO
-     * Tu vista 'servicios.blade.php' usa un bucle @foreach($categorias...),
-     * por lo tanto, aquí DEBEMOS enviar la variable $categorias.
-     */
+    // --- CORRECCIÓN 1: Lógica de Servicios ---
     public function servicios() {
-        // Opción Correcta: Traer Categorías con sus Servicios
+        // Usamos Eloquent para traer categorías CON sus servicios.
+        // Esto permite iterar en la vista: @foreach($categorias as $cat) ...
         $categorias = Categoria::with('servicios')->get();
 
-        // Usamos compact para enviar la variable $categorias a la vista
         return view('pages.servicios', compact('categorias'));
     }
 
@@ -58,11 +46,20 @@ class PageController extends Controller
         return view('pages.gracias');
     }
 
-    /**
-     * Procesa y almacena una nueva reserva.
-     */
-    public function storeReserva(StoreReservaRequest $request) {
-        $validated = $request->validated();
+    // --- CORRECCIÓN 2: Validación Directa (Reserva) ---
+    public function storeReserva(Request $request) {
+        // Validamos aquí mismo para no depender de archivos externos que faltan
+        $validated = $request->validate([
+            'nombres'          => 'required|string|max:255',
+            'apellido_paterno' => 'required|string|max:255',
+            'apellido_materno' => 'nullable|string|max:255',
+            'correo'           => 'required|email',
+            'telefono'         => 'required|string',
+            'servicios'        => 'required|array',
+            'fecha'            => 'required|date',
+            'hora'             => 'required',
+            'mensaje'          => 'nullable|string',
+        ]);
 
         $reservaData = [
             'nombre'       => $validated['nombres'],
@@ -70,6 +67,7 @@ class PageController extends Controller
             'amaterno'     => $validated['apellido_materno'],
             'correo'       => $validated['correo'],
             'telefono'     => $validated['telefono'],
+            // Convertimos el array de servicios a JSON para guardarlo
             'servicios'    => json_encode($validated['servicios']),
             'fechadeseada' => $validated['fecha'],
             'horadeseada'  => $validated['hora'],
@@ -81,12 +79,14 @@ class PageController extends Controller
         return back()->with('success', '¡Tu reserva ha sido creada exitosamente! Pronto te contactaremos.');
     }
 
-    /**
-     * Procesa y almacena un nuevo mensaje de contacto.
-     */
-    public function storeContacto(StoreContactoRequest $request)
+    // --- CORRECCIÓN 3: Validación Directa (Contacto) ---
+    public function storeContacto(Request $request)
     {
-        $validated = $request->validated();
+        $validated = $request->validate([
+            'nombre'  => 'required|string|max:255',
+            'email'   => 'required|email',
+            'mensaje' => 'required|string',
+        ]);
 
         Contacto::create([
             'nombre'  => $validated['nombre'],
@@ -96,8 +96,11 @@ class PageController extends Controller
 
         return back()->with('success', '¡Tu mensaje ha sido enviado correctamente!');
     }
-    
+
     public function instalaciones() {
-        return view('pages.instalaciones');
+        // Asegúrate de que el nombre del archivo en 'resources/views/pages' 
+        // sea exactamente 'Instalaciones.blade.php' (con I mayúscula) o cámbialo aquí.
+        // Si tu archivo es minúscula, usa 'pages.instalaciones'.
+        return view('pages.Instalaciones'); 
     }
 }

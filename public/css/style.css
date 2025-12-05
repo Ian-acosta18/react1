@@ -812,3 +812,253 @@ footer .social-links a:hover {
     background-color: #d9534f;
     color: white;
 }
+
+/* =========================================
+   NUEVOS ESTILOS PARA EL HOME (MEJORA ESTÉTICA)
+   ========================================= */
+
+/* Animación de entrada suave */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+    animation: fadeIn 1s ease-out forwards;
+}
+
+/* Mejoras al Hero */
+.subtitulo-decorativo {
+    display: block;
+    font-family: var(--fuente-titulos);
+    color: var(--color-principal);
+    font-size: 1.1rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+}
+
+.botones-hero {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.btn-secundario {
+    display: inline-block;
+    padding: 1rem 2.5rem;
+    font-size: 1.1rem;
+    font-family: var(--fuente-titulos);
+    color: var(--color-texto);
+    text-decoration: none;
+    border: 2px solid var(--color-texto);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn-secundario:hover {
+    background: var(--color-texto);
+    color: white;
+}
+
+/* Efecto Marco en Imagen Hero */
+.marco-imagen {
+    position: relative;
+}
+.marco-imagen::after {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 100%;
+    height: 100%;
+    border: 2px solid var(--color-principal);
+    border-radius: 15px;
+    z-index: -1;
+    transition: transform 0.3s ease;
+}
+.hero-imagen-decorativa:hover .marco-imagen::after {
+    transform: translate(10px, 10px);
+}
+
+/* Sección de Valores (Iconos) */
+.seccion-valores {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    padding: 4rem 1rem;
+    text-align: center;
+    background: white;
+    margin-bottom: 2rem;
+}
+
+.valor-card {
+    padding: 2rem;
+    transition: transform 0.3s;
+}
+
+.valor-card:hover {
+    transform: translateY(-10px);
+}
+
+.valor-card .icono {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.valor-card h3 {
+    font-family: var(--fuente-titulos);
+    margin-bottom: 0.5rem;
+    color: var(--color-texto);
+}
+
+/* Sección Destacados */
+.seccion-destacados {
+    padding: 4rem 1rem;
+    background-color: var(--color-acento-claro); /* F9F3EC */
+    border-radius: 20px;
+    margin: 4rem auto;
+}
+
+.texto-centro {
+    text-align: center;
+    margin-bottom: 3rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.grid-destacados {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.card-destacado {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease;
+}
+
+.card-destacado:hover {
+    transform: translateY(-5px);
+}
+
+.card-destacado .img-container {
+    height: 250px;
+    overflow: hidden;
+}
+
+.card-destacado img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.card-destacado:hover img {
+    transform: scale(1.1);
+}
+
+.info-destacado {
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.link-detalle {
+    display: inline-block;
+    margin-top: 1rem;
+    color: var(--color-principal);
+    text-decoration: none;
+    font-weight: bold;
+    font-family: var(--fuente-titulos);
+}
+
+/* Sección Testimonios */
+.seccion-testimonios {
+    padding: 5rem 1rem;
+    text-align: center;
+    background-image: url('../imagen/spa_fondo_trabajo.jpg'); /* Asegúrate de que esta imagen exista o usa otra */
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Efecto Parallax */
+    position: relative;
+    color: white;
+}
+
+.seccion-testimonios::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(92, 75, 69, 0.7); /* Oscurecer la imagen */
+}
+
+.contenido-testimonio {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.cita-destacada {
+    font-family: var(--fuente-titulos);
+    font-size: 1.8rem;
+    font-style: italic;
+    margin-bottom: 1.5rem;
+    line-height: 1.4;
+}
+
+/* CTA Final */
+.cta-final {
+    padding: 5rem 1rem;
+    text-align: center;
+    background: var(--color-principal);
+    color: white;
+    margin: 4rem 0 0 0;
+    border-radius: 20px 20px 0 0;
+}
+
+.cta-final h2 {
+    font-family: var(--fuente-titulos);
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.btn-blanco {
+    background-color: white;
+    color: var(--color-principal);
+    margin-top: 2rem;
+    border: none;
+}
+
+.btn-blanco:hover {
+    background-color: #f0f0f0;
+    color: var(--color-principal);
+    transform: translateY(-3px);
+}
+
+/* Responsive Ajustes */
+@media (max-width: 768px) {
+    .botones-hero {
+        flex-direction: column;
+    }
+    .btn-secundario {
+        text-align: center;
+    }
+    .hero-inicio {
+        margin-top: 0;
+        border-radius: 0;
+    }
+    .marco-imagen::after {
+        display: none; /* Simplificar en móvil */
+    }
+}
+
+
+
