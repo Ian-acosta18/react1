@@ -4,17 +4,6 @@
 <div class="container" style="margin-top: 30px; max-width: 700px;">
     <h2>Editar Instalación</h2>
 
-    {{-- BLOQUE DE ERRORES DE VALIDACIÓN --}}
-    @if (count($errors) > 0)
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
     <form action="{{ route('admin.instalaciones.actualizar') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <input type="hidden" name="id" value="{{ $instalacion->id }}">

@@ -5,14 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Servicio;
 use App\Models\Categoria;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\File;
+use Session;
+use File; // Importante para poder borrar archivos
 
 class AdminServiciosController extends Controller
 {
     // 1. REPORTE (CONSULTA)
     public function reporte()
     {
+        // USO DE ELOQUENT: Es más limpio y trae la relación con categoría automáticamente
+        // Asegúrate de tener la función 'categoria()' en tu modelo Servicio
         $servicios = Servicio::with('categoria')
                              ->orderBy('nombre_servicio', 'ASC')
                              ->get();
@@ -23,50 +25,29 @@ class AdminServiciosController extends Controller
     // 2. ALTA (VISTA)
     public function alta()
     {
+        // Obtenemos categorías con Eloquent
         $categorias = Categoria::orderBy('nombre_categoria', 'ASC')->get();
+        
         return view('admin.servicios.alta')->with('categorias', $categorias);
     }
 
-    // 3. GUARDAR (ACCION CON VALIDACIÓN ESTRICTA)
+    // 3. GUARDAR (ACCION)
     public function guardar(Request $request)
     {
-        // --- REGLAS DE VALIDACIÓN ---
-        $reglas = [
-            // Nombre: Mínimo 4 letras, solo letras y espacios.
-            'nombre_servicio' => ['required', 'string', 'min:4', 'max:60', 'regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/'],
-            
-            // Precio: Obligatorio, numérico, positivo y menor a 10,000 (ajústalo si vendes cosas más caras).
-            'precio'          => 'required|numeric|min:0|max:10000',
-            
-            // Categoría: Obligatoria.
-            'categoria_id'    => 'required|integer',
-            
-            // Foto: Obligatoria al crear, imagen válida, máx 3MB.
-            'foto'            => 'required|image|mimes:jpg,jpeg,png|max:3072'
-        ];
+        $this->validate($request, [
+            'nombre_servicio' => 'required',
+            'precio'          => 'required|numeric',
+            'categoria_id'    => 'required',
+            'foto'            => 'image|mimes:jpg,jpeg,png' // Validación de imagen
+        ]);
 
-        // --- MENSAJES PERSONALIZADOS ---
-        $mensajes = [
-            'nombre_servicio.required' => 'El nombre del servicio es obligatorio.',
-            'nombre_servicio.min'      => 'El nombre es muy corto (mínimo 4 letras).',
-            'nombre_servicio.regex'    => 'El nombre solo puede contener letras y espacios.',
-            'precio.required'          => 'Debes asignar un precio.',
-            'precio.numeric'           => 'El precio debe ser un número válido.',
-            'precio.min'               => 'El precio no puede ser negativo.',
-            'categoria_id.required'    => 'Debes seleccionar una categoría.',
-            'foto.required'            => 'La imagen del servicio es obligatoria.',
-            'foto.image'               => 'El archivo debe ser una imagen válida (JPG, PNG).',
-            'foto.max'                 => 'La imagen es muy pesada (máximo 3MB).'
-        ];
-
-        $this->validate($request, $reglas, $mensajes);
-
-        // --- PROCESO DE GUARDADO ---
-        $ruta_imagen = ''; 
+        $ruta_imagen = ''; // Valor por defecto
 
         if ($request->hasFile('foto')) {
             $file = $request->file('foto');
+            // Generar nombre único: servicio_timestamp.ext
             $img = 'servicio_' . time() . '.' . $file->getClientOriginalExtension();
+            // Mover a public/imagen
             $file->move(public_path('imagen'), $img);
             $ruta_imagen = 'imagen/' . $img;
         }
@@ -79,13 +60,14 @@ class AdminServiciosController extends Controller
         
         $servicio->save();
 
-        Session::flash('mensaje', "El servicio '$request->nombre_servicio' ha sido creado correctamente.");
+        Session::flash('mensaje', "El servicio $request->nombre_servicio ha sido creado.");
         return redirect()->route('admin.servicios.reporte');
     }
 
     // 4. EDITAR (VISTA)
     public function editar($id)
     {
+        // Buscamos con Eloquent. Si no existe, findOrFail o comprobación manual.
         $servicio = Servicio::find($id);
         $categorias = Categoria::orderBy('nombre_categoria', 'ASC')->get();
 
@@ -99,71 +81,72 @@ class AdminServiciosController extends Controller
             ->with('categorias', $categorias);
     }
 
-    // 5. ACTUALIZAR (ACCION CON VALIDACIÓN ESTRICTA)
+    // 5. ACTUALIZAR (ACCION)
     public function actualizar(Request $request)
     {
-        // --- REGLAS (Iguales a guardar, pero foto opcional) ---
-        $reglas = [
+        // 1. Validamos
+        $this->validate($request, [
             'id'              => 'required',
-            'nombre_servicio' => ['required', 'string', 'min:4', 'max:60', 'regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/'],
-            'precio'          => 'required|numeric|min:0|max:10000',
-            'categoria_id'    => 'required|integer',
-            'foto'            => 'nullable|image|mimes:jpg,jpeg,png|max:3072'
-        ];
+            'nombre_servicio' => 'required',
+            'precio'          => 'required|numeric',
+            'categoria_id'    => 'required',
+            'foto'            => 'nullable|image|mimes:jpg,jpeg,png' // 'nullable' porque la foto es opcional al editar
+        ]);
 
-        $mensajes = [
-            'nombre_servicio.regex' => 'El nombre solo puede contener letras y espacios.',
-            'precio.numeric'        => 'El precio debe ser un número válido.',
-            'precio.min'            => 'El precio no puede ser negativo.'
-        ];
-
-        $this->validate($request, $reglas, $mensajes);
-
+        // 2. Buscamos el servicio
         $servicio = Servicio::find($request->id);
         
         if (!$servicio) {
             return redirect()->route('admin.servicios.reporte');
         }
 
-        // --- GESTIÓN DE FOTO ---
+        // 3. ¿Subieron nueva foto?
         if ($request->hasFile('foto')) {
-            // Borrar anterior
+            // A) BORRAR FOTO ANTERIOR SI EXISTE
+            // Verificamos que tenga una imagen guardada y que el archivo físico exista
             if ($servicio->imagen && File::exists(public_path($servicio->imagen))) {
                 File::delete(public_path($servicio->imagen));
             }
 
-            // Subir nueva
+            // B) SUBIR NUEVA FOTO
             $file = $request->file('foto');
             $img = 'servicio_' . time() . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('imagen'), $img);
             
+            // Actualizamos la propiedad en el objeto
             $servicio->imagen = 'imagen/' . $img; 
         }
+        // Nota: Si no suben foto, no hacemos nada y se mantiene la ruta anterior.
 
+        // 4. Actualizamos resto de campos
         $servicio->nombre_servicio = $request->nombre_servicio;
         $servicio->precio          = $request->precio;
         $servicio->categoria_id    = $request->categoria_id;
         
+        // 5. Guardamos cambios
         $servicio->save();
 
-        Session::flash('mensaje', "Servicio actualizado correctamente.");
+        Session::flash('mensaje', "El servicio ha sido actualizado correctamente.");
         return redirect()->route('admin.servicios.reporte');
     }
 
     // 6. ELIMINAR (ACCION)
     public function eliminar($id)
     {
+        // Buscamos primero para obtener la info de la imagen
         $servicio = Servicio::find($id);
 
         if ($servicio) {
+            // 1. Borrar imagen del servidor si existe
             if ($servicio->imagen && File::exists(public_path($servicio->imagen))) {
                 File::delete(public_path($servicio->imagen));
             }
 
+            // 2. Eliminar registro de BD
             $servicio->delete();
             Session::flash('mensaje', "Servicio eliminado correctamente.");
         } else {
-            Session::flash('mensaje', "No se pudo encontrar el servicio.");
+            Session::flash('mensaje', "No se pudo encontrar el servicio a eliminar.");
         }
         
         return redirect()->route('admin.servicios.reporte');

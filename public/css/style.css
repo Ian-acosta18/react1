@@ -1303,6 +1303,564 @@ footer .social-links a:hover {
     font-size: 1.2rem;
 }
 
+/* =========================================
+   ESTILOS PREMIUM PARA LOGIN (SPA)
+   ========================================= */
 
+.login-wrapper {
+    min-height: 85vh; /* Ocupa casi toda la pantalla */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Fondo con degradado sutil y textura elegante */
+    background: linear-gradient(135deg, #FDFBF7 0%, #f4ebe4 100%);
+    position: relative;
+    padding: 1rem;
+}
 
+/* Efecto de fondo decorativo */
+.login-wrapper::before {
+    content: '';
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    background: var(--color-principal);
+    filter: blur(80px);
+    opacity: 0.15;
+    border-radius: 50%;
+    top: 10%;
+    right: 20%;
+    z-index: 0;
+}
+
+.login-card {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px); /* Efecto cristal moderno */
+    padding: 3.5rem 3rem;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(92, 75, 69, 0.08); /* Sombra suave y difusa */
+    width: 100%;
+    max-width: 450px;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    position: relative;
+    z-index: 1;
+}
+
+/* Cabecera del login */
+.login-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.icon-brand {
+    font-size: 2.5rem;
+    color: var(--color-principal);
+    margin-bottom: 1rem;
+    display: inline-block;
+    animation: fadeIn 1.2s ease;
+}
+
+.login-header h2 {
+    font-family: var(--fuente-titulos);
+    color: var(--color-texto);
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.login-header p {
+    color: #8d7a75;
+    font-size: 0.95rem;
+    font-family: var(--fuente-cuerpo);
+}
+
+/* Inputs personalizados */
+.input-group-custom {
+    margin-bottom: 1.5rem;
+}
+
+.input-group-custom label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--color-texto);
+    font-weight: 600;
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon {
+    position: absolute;
+    left: 15px;
+    color: #a59893;
+    display: flex;
+    align-items: center;
+}
+
+.input-wrapper input {
+    width: 100%;
+    padding: 1rem 1rem 1rem 3rem; /* Espacio a la izquierda para el icono */
+    border: 1px solid #e1e1e1;
+    border-radius: 10px;
+    font-size: 1rem;
+    background-color: #fcfcfc;
+    transition: all 0.3s ease;
+    color: var(--color-texto);
+}
+
+.input-wrapper input:focus {
+    outline: none;
+    border-color: var(--color-principal);
+    background-color: #fff;
+    box-shadow: 0 0 0 4px rgba(185, 141, 123, 0.1); /* Resplandor suave al hacer click */
+}
+
+/* Botón Login */
+.btn-login {
+    width: 100%;
+    padding: 1rem;
+    margin-top: 1rem;
+    background-color: var(--color-principal);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-family: var(--fuente-titulos);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(185, 141, 123, 0.3);
+}
+
+.btn-login:hover {
+    background-color: #a57c6b;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(185, 141, 123, 0.4);
+}
+
+/* Alertas */
+.custom-alert {
+    background-color: #fde8e8;
+    color: #c53030;
+    border: 1px solid #fbd5d5;
+    padding: 0.8rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+/* Footer (Volver) */
+.login-footer {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.login-footer a {
+    color: #8d7a75;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s;
+}
+
+.login-footer a:hover {
+    color: var(--color-principal);
+    text-decoration: underline;
+}
+
+/* Animación de entrada */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+    animation: fadeIn 0.8s ease-out forwards;
+}
+
+/* =========================================
+   ESTILOS PREMIUM PARA DASHBOARD (ADMIN)
+   ========================================= */
+
+.dashboard-wrapper {
+    padding: 4rem 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    min-height: 80vh;
+}
+
+/* Encabezado */
+.dashboard-header {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.subtitulo-admin {
+    display: block;
+    font-family: var(--fuente-cuerpo);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 0.85rem;
+    color: #999;
+    margin-bottom: 0.5rem;
+}
+
+.dashboard-header h1 {
+    font-family: var(--fuente-titulos);
+    color: var(--color-principal);
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.dashboard-header p {
+    color: var(--color-texto);
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto;
+    opacity: 0.8;
+}
+
+/* Grilla de Tarjetas */
+.admin-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2.5rem;
+    padding: 1rem;
+}
+
+.admin-card {
+    background: white;
+    border-radius: 20px;
+    padding: 2.5rem 2rem;
+    text-align: center;
+    border: 1px solid rgba(0,0,0,0.03);
+    box-shadow: 0 10px 30px rgba(92, 75, 69, 0.06);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Efecto Hover en Tarjetas */
+.admin-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(92, 75, 69, 0.12);
+    border-color: rgba(185, 141, 123, 0.2);
+}
+
+/* Iconos circulares */
+.card-icon-bg {
+    width: 80px;
+    height: 80px;
+    background-color: var(--color-acento-claro); /* F9F3EC */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-principal);
+    margin-bottom: 1.5rem;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.admin-card:hover .card-icon-bg {
+    background-color: var(--color-principal);
+    color: white;
+}
+
+.admin-card h3 {
+    font-family: var(--fuente-titulos);
+    font-size: 1.5rem;
+    color: var(--color-texto);
+    margin-bottom: 0.8rem;
+}
+
+.admin-card p {
+    color: #888;
+    margin-bottom: 2rem;
+    font-size: 0.95rem;
+    flex-grow: 1; /* Empuja el botón hacia abajo */
+}
+
+/* Botones de las tarjetas */
+.btn-admin-card {
+    display: inline-block;
+    padding: 0.8rem 1.5rem;
+    width: 100%;
+    border: 1px solid var(--color-principal);
+    border-radius: 50px;
+    color: var(--color-principal);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.btn-admin-card:hover {
+    background-color: var(--color-principal);
+    color: white;
+}
+
+/* Footer (Logout) */
+.dashboard-footer {
+    text-align: center;
+    padding-top: 2rem;
+}
+
+.btn-logout {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.7rem 1.5rem;
+    color: #e57373; /* Rojo suave */
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-logout:hover {
+    background-color: #ffebee;
+    color: #c62828;
+}
+
+/* Animaciones de entrada */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in-up {
+    animation: fadeInUp 0.8s ease-out forwards;
+    animation-delay: 0.2s; /* Pequeño retraso tras el header */
+    opacity: 0; /* Inicialmente invisible */
+}
+
+/* =========================================
+   ESTILOS REPORTE DE SERVICIOS (ADMIN)
+   ========================================= */
+
+.admin-content-wrapper {
+    padding: 3rem 1.5rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    /* Fondo muy sutil para diferenciar del blanco de las tarjetas */
+    background-color: #FDFBF7; 
+    min-height: 80vh;
+}
+
+/* --- Encabezado --- */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(185, 141, 123, 0.1);
+}
+
+.muted-label {
+    display: block;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #999;
+    margin-bottom: 0.5rem;
+}
+
+.page-header h2 {
+    font-family: var(--fuente-titulos);
+    color: var(--color-texto);
+    font-size: 2.5rem;
+    margin: 0;
+    line-height: 1;
+}
+
+/* Botón Nuevo Servicio */
+.btn-create-new {
+    background-color: var(--color-principal);
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border-radius: 50px; /* Estilo píldora */
+    text-decoration: none;
+    font-family: var(--fuente-titulos);
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(185, 141, 123, 0.3);
+}
+
+.btn-create-new:hover {
+    background-color: #a57c6b;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(185, 141, 123, 0.4);
+    color: white;
+}
+
+/* --- Tarjeta de Tabla --- */
+.table-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(92, 75, 69, 0.08); /* Sombra elegante */
+    overflow: hidden;
+    border: 1px solid rgba(0,0,0,0.02);
+}
+
+/* --- Tabla Premium --- */
+.table-premium {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-premium th {
+    background-color: #F9F3EC; /* Color acento claro */
+    padding: 1.2rem 1.5rem;
+    text-align: left;
+    font-family: var(--fuente-titulos);
+    color: var(--color-texto);
+    font-weight: 600;
+    font-size: 1rem;
+    border-bottom: 2px solid rgba(185, 141, 123, 0.1);
+}
+
+.table-premium td {
+    padding: 1rem 1.5rem;
+    vertical-align: middle;
+    border-bottom: 1px solid #f0f0f0;
+    color: #666;
+}
+
+/* Efecto hover en filas */
+.table-premium tbody tr:hover {
+    background-color: #fffcf8; 
+}
+
+/* --- Elementos de la Celda --- */
+
+/* Imagen */
+.img-avatar-container {
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    background: #f0f0f0;
+}
+
+.img-avatar-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.img-placeholder {
+    opacity: 0.5;
+    filter: grayscale(100%);
+}
+
+/* Títulos y Badges */
+.fw-bold-title {
+    font-weight: 600;
+    color: var(--color-texto);
+    font-size: 1.05rem;
+}
+
+.badge-categoria {
+    background-color: #f4f4f4;
+    padding: 0.3rem 0.8rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    color: #888;
+    letter-spacing: 0.5px;
+}
+
+.price-text {
+    font-family: var(--fuente-titulos);
+    color: var(--color-principal);
+    font-weight: bold;
+    font-size: 1.15rem;
+}
+
+/* Acciones (Botones circulares) */
+.action-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+.btn-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
+
+.btn-icon.edit {
+    color: #3b82f6; /* Azul suave */
+    background-color: #eff6ff;
+}
+
+.btn-icon.edit:hover {
+    background-color: #3b82f6;
+    color: white;
+}
+
+.btn-icon.delete {
+    color: #ef4444; /* Rojo suave */
+    background-color: #fef2f2;
+}
+
+.btn-icon.delete:hover {
+    background-color: #ef4444;
+    color: white;
+}
+
+/* --- Alertas y Estados --- */
+.alert-premium {
+    padding: 1rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-weight: 500;
+}
+
+.alert-premium.success {
+    background-color: #ecfdf5;
+    color: #065f46;
+    border: 1px solid #d1fae5;
+}
+
+.empty-state {
+    padding: 4rem;
+    text-align: center;
+    color: #999;
+    font-style: italic;
+}
+
+.link-back {
+    color: #999;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s;
+}
+
+.link-back:hover {
+    color: var(--color-principal);
+}
+
+.text-right {
+    text-align: right;
+}
 

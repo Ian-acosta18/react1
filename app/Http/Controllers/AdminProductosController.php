@@ -4,40 +4,39 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Productos;
-use File; // Importante para borrar imágenes
+use Illuminate\Support\Facades\File; // Importación correcta
 
 class AdminProductosController extends Controller
 {
-    // 1. MOSTRAR LISTA (Igual que Servicios)
-    public function index() {
+    // 1. REPORTE
+    public function reporte() {
         $productos = Productos::all();
-        // CORRECCIÓN CLAVE: Cambiamos 'admin.productos.index' por 'admin.productos.reporte'
-        // Esto cargará la vista que tiene el diseño de tabla idéntico a Servicios.
+        // Asegúrate de que tu vista esté en resources/views/admin/productos/reporte.blade.php
+        // Si tu archivo se llama 'index.blade.php', cámbialo aquí a 'admin.productos.index'
         return view('admin.productos.reporte', compact('productos'));
     }
 
-    // 2. FORMULARIO DE ALTA
-    public function create() {
-        return view('admin.productos.alta'); // Asegúrate de que la vista se llame alta.blade.php
+    // 2. ALTA
+    public function alta() {
+        return view('admin.productos.create');
     }
 
-    // 3. GUARDAR PRODUCTO
-    public function store(Request $request) {
+    // 3. GUARDAR
+    public function guardar(Request $request) {
+        // Validaciones
         $reglas = [
-            // not_regex:/^[0-9]+$/  -> Falla si el texto son solo números
             'nombre'      => 'required|string|max:100|unique:productos,nombre|not_regex:/^[0-9]+$/', 
             'descripcion' => 'nullable|string|max:500|not_regex:/^[0-9]+$/',
             'precio'      => 'required|numeric|min:0',
             'stock'       => 'nullable|integer|min:0',
-            'imagen'      => 'required|image|mimes:jpeg,png,jpg|max:2048' // Max 2MB
+            'imagen'      => 'required|image|mimes:jpeg,png,jpg|max:2048' // Imagen obligatoria al crear
         ];
 
         $mensajes = [
-            'nombre.not_regex'      => 'El nombre no puede estar compuesto solo por números.',
-            'descripcion.not_regex' => 'La descripción no puede ser solo números.',
-            'imagen.required'       => 'La imagen es obligatoria al crear un producto.',
-            'imagen.max'            => 'La imagen no puede pesar más de 2MB.',
-            // ... otros mensajes personalizados ...
+            'nombre.not_regex' => 'El nombre no puede ser solo números.',
+            'imagen.required'  => 'La imagen es obligatoria.',
+            'imagen.image'     => 'El archivo debe ser una imagen válida (jpg, png).',
+            'imagen.max'       => 'La imagen no puede pesar más de 2MB.'
         ];
 
         $request->validate($reglas, $mensajes);
@@ -48,9 +47,11 @@ class AdminProductosController extends Controller
         $prod->precio = $request->precio;
         $prod->stock = $request->stock ?? 0;
 
+        // Subida de Imagen
         if ($request->hasFile('imagen')) {
             $file = $request->file('imagen');
             $filename = time() . '_' . $file->getClientOriginalName();
+            // Mover a public/imagen
             $file->move(public_path('imagen'), $filename);
             $prod->imagen = 'imagen/' . $filename;
         }
@@ -60,39 +61,39 @@ class AdminProductosController extends Controller
         return redirect()->route('admin.productos.reporte')->with('mensaje', 'Producto creado exitosamente');
     }
 
-    // 4. FORMULARIO DE EDICIÓN
-    public function edit($id) {
+    // 4. EDITAR
+    public function editar($id) {
         $producto = Productos::find($id);
-        
+        if (!$producto) {
+            return redirect()->route('admin.productos.reporte');
+        }
         return view('admin.productos.edit', compact('producto'));
     }
 
-    // 5. ACTUALIZAR PRODUCTO
-    public function update(Request $request, $id) {
-        $prod = Productos::find($id);
+    // 5. ACTUALIZAR
+    public function actualizar(Request $request) {
+        // Buscamos por el ID que viene oculto en el formulario
+        $prod = Productos::find($request->id);
+
+        if (!$prod) {
+            return redirect()->route('admin.productos.reporte');
+        }
 
         $reglas = [
             'nombre'      => 'required|string|max:100|not_regex:/^[0-9]+$/',
             'descripcion' => 'nullable|string|max:500|not_regex:/^[0-9]+$/',
             'precio'      => 'required|numeric|min:0',
             'stock'       => 'nullable|integer|min:0',
-            'imagen'      => 'nullable|image|mimes:jpeg,png,jpg' 
+            'imagen'      => 'nullable|image|mimes:jpeg,png,jpg|max:2048' // Opcional al editar
         ];
 
-        $mensajes = [
-            'nombre.not_regex'      => 'El nombre no puede estar compuesto solo por números.',
-            'descripcion.not_regex' => 'La descripción no puede ser solo números.',
-            'imagen.image'          => 'El archivo debe ser una imagen válida.',
-            'imagen.max'            => 'La imagen no puede pesar más de 2MB.'
-        ];
+        $request->validate($reglas);
 
-        $request->validate($reglas, $mensajes);
-
-        // Lógica para mantener la imagen anterior si no se sube una nueva
+        // Lógica de Imagen
         if ($request->hasFile('imagen')) {
-            // Solo si suben una nueva, borramos la vieja
-            if ($prod->imagen && file_exists(public_path($prod->imagen))) {
-                @unlink(public_path($prod->imagen));
+            // Borrar anterior si existe
+            if ($prod->imagen && File::exists(public_path($prod->imagen))) {
+                File::delete(public_path($prod->imagen));
             }
 
             $file = $request->file('imagen');
@@ -111,13 +112,13 @@ class AdminProductosController extends Controller
         return redirect()->route('admin.productos.reporte')->with('mensaje', 'Producto actualizado exitosamente');
     }
 
-    // 6. ELIMINAR PRODUCTO
-    public function destroy($id) {
+    // 6. ELIMINAR
+    public function eliminar($id) {
         $prod = Productos::find($id);
         
         if ($prod) {
-            if ($prod->imagen && file_exists(public_path($prod->imagen))) {
-                @unlink(public_path($prod->imagen));
+            if ($prod->imagen && File::exists(public_path($prod->imagen))) {
+                File::delete(public_path($prod->imagen));
             }
             $prod->delete();
         }
