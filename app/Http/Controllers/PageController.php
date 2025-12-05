@@ -21,6 +21,7 @@ class PageController extends Controller
         // Esto permite iterar en la vista: @foreach($categorias as $cat) ...
         $categorias = Categoria::with('servicios')->get();
 
+        // Enviamos la variable $categorias a la vista (NO $servicios)
         return view('pages.servicios', compact('categorias'));
     }
 
@@ -38,6 +39,7 @@ class PageController extends Controller
     }
 
     public function reservaciones() {
+        // Para el select del formulario de reservas
         $servicios = Servicio::with('categoria')->get();
         return view('pages.reservaciones', ['servicios' => $servicios]);
     }
@@ -47,8 +49,9 @@ class PageController extends Controller
     }
 
     // --- CORRECCIÓN 2: Validación Directa (Reserva) ---
+    // Usamos 'Request' estándar de Laravel en lugar de 'StoreReservaRequest'
     public function storeReserva(Request $request) {
-        // Validamos aquí mismo para no depender de archivos externos que faltan
+        
         $validated = $request->validate([
             'nombres'          => 'required|string|max:255',
             'apellido_paterno' => 'required|string|max:255',
@@ -80,6 +83,7 @@ class PageController extends Controller
     }
 
     // --- CORRECCIÓN 3: Validación Directa (Contacto) ---
+    // Usamos 'Request' estándar
     public function storeContacto(Request $request)
     {
         $validated = $request->validate([
@@ -98,9 +102,8 @@ class PageController extends Controller
     }
 
     public function instalaciones() {
-        // Asegúrate de que el nombre del archivo en 'resources/views/pages' 
-        // sea exactamente 'Instalaciones.blade.php' (con I mayúscula) o cámbialo aquí.
-        // Si tu archivo es minúscula, usa 'pages.instalaciones'.
+        // Importante: El nombre debe coincidir EXACTAMENTE con el archivo.
+        // Tu archivo se llama 'Instalaciones.blade.php' (con I mayúscula).
         return view('pages.Instalaciones'); 
     }
 }

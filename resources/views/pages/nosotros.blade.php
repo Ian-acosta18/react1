@@ -2,341 +2,428 @@
 
 @section('content')
 
-<h2 class="seccion-titulo">Nosotros</h2>
+<div class="header-nosotros">
+    <div class="header-overlay">
+        <h2 class="seccion-titulo">Nuestra Esencia</h2>
+        <p class="subtitulo-header">Un viaje hacia tu mejor versión</p>
+    </div>
+</div>
 
-<div class="nosotros-contenido-nuevo">
-    <div class="intro-nosotros">
-        <p class="texto-destacado">Somos un oasis de tranquilidad dedicado a realzar tu belleza natural y renovar tu espíritu. En AURA BEAUTY & SPA, creemos que cada persona merece un momento para desconectar y cuidarse.</p>
+<div class="nosotros-wrapper">
+
+    <div class="intro-bloque">
+        <p class="texto-destacado">
+            Somos un oasis de tranquilidad dedicado a realzar tu belleza natural y renovar tu espíritu. 
+            En <strong>AURA BEAUTY & SPA</strong>, creemos que cada persona merece un momento para desconectar y cuidarse.
+        </p>
     </div>
     
-    <div class="seccion-filosofia">
-        <h3>Nuestra Filosofía</h3>
-        <p>Nuestra misión es combinar las técnicas más innovadoras con productos de la más alta calidad en un ambiente sereno y acogedor. <em>"Luce radiante, siéntete tú"</em> no es solo nuestro eslogan, es nuestra promesa.</p>
-    </div>
-
-    <!-- NUEVA SECCIÓN: Nuestra Historia -->
-    <div class="seccion-historia">
-        <h3>Nuestra Historia</h3>
-        <p>Desde nuestros inicios, AURA BEAUTY & SPA ha sido más que un spa; es un refugio donde la belleza y el bienestar se encuentran. Fundado con la visión de crear un espacio donde cada cliente pueda reconectar consigo mismo, hemos crecido gracias a la confianza de quienes nos eligen día a día.</p>
-        <p>Nuestro compromiso con la excelencia nos ha llevado a estar en constante evolución, incorporando las últimas tendencias en tratamientos de belleza mientras mantenemos la calidez y atención personalizada que nos caracteriza.</p>
-    </div>
-
-    <div class="valores-grid">
-        <div class="valor-card">
-            <div class="icono">✨</div>
-            <h4>Excelencia</h4>
-            <p>Profesionales certificados con años de experiencia en el cuidado de la belleza.</p>
+    <div class="bloque-zigzag">
+        <div class="bloque-texto">
+            <h3>Nuestra Filosofía</h3>
+            <p>Nuestra misión es combinar las técnicas más innovadoras con productos de la más alta calidad en un ambiente sereno y acogedor.</p>
+            <blockquote class="cita-aura">"Luce radiante, siéntete tú"</blockquote>
+            <p>No es solo nuestro eslogan, es nuestra promesa inquebrantable de calidad.</p>
         </div>
+        <div class="bloque-imagen">
+            <img src="{{ asset('imagen/sinfoto.jpg') }}" alt="Filosofía Aura">
+        </div>
+    </div>
+
+    <div class="bloque-zigzag inverso">
+        <div class="bloque-texto">
+            <h3>Nuestra Historia</h3>
+            <p>Desde nuestros inicios, AURA BEAUTY & SPA ha sido más que un spa; es un refugio. Fundado con la visión de crear un espacio de reconexión, hemos crecido gracias a la confianza de quienes nos eligen.</p>
+            <p>Nuestra evolución es constante, incorporando tendencias globales sin perder la calidez local que nos caracteriza.</p>
+        </div>
+        <div class="bloque-imagen">
+             <img src="{{ asset('imagen/sinfoto.jpg') }}" alt="Historia Aura">
+        </div>
+    </div>
+
+    <div class="seccion-valores">
+        <h3 class="titulo-centro">¿Por qué elegirnos?</h3>
         
-        <div class="valor-card">
-            <div class="icono">💆‍♀</div>
-            <h4>Bienestar</h4>
-            <p>Tu relajación y comodidad son nuestra máxima prioridad.</p>
-        </div>
-        
-        <div class="valor-card">
-            <div class="icono">🌿</div>
-            <h4>Calidad</h4>
-            <p>Utilizamos solo productos premium y técnicas de vanguardia.</p>
+        <div class="valores-grid">
+            <div class="valor-card">
+                <div class="icono-contenedor">✨</div>
+                <h4>Excelencia</h4>
+                <p>Profesionales certificados con años de experiencia en el cuidado de la belleza.</p>
+            </div>
+            
+            <div class="valor-card destacado">
+                <div class="icono-contenedor">💆‍♀</div>
+                <h4>Bienestar</h4>
+                <p>Tu relajación y comodidad son nuestra máxima prioridad absoluta.</p>
+            </div>
+            
+            <div class="valor-card">
+                <div class="icono-contenedor">🌿</div>
+                <h4>Calidad</h4>
+                <p>Utilizamos solo productos premium y técnicas de vanguardia.</p>
+            </div>
         </div>
     </div>
 
-
-    <!-- NUEVA SECCIÓN: Nuestro Espacio -->
-    <div class="seccion-espacio">
-        <h3>Nuestro Espacio</h3>
-        <p>Cada rincón de AURA ha sido diseñado pensando en tu comodidad. Desde la iluminación cálida hasta la música relajante, pasando por nuestros espacios amplios y privados, todo está pensado para que te sientas en casa.</p>
-        <p>Creemos que el ambiente es tan importante como el tratamiento mismo. Por eso, hemos creado un santuario donde puedes desconectar del estrés diario y sumergirte en una experiencia sensorial completa.</p>
+    <div class="bloque-zigzag">
+        <div class="bloque-texto">
+            <h3>Nuestro Espacio</h3>
+            <p>Cada rincón de AURA ha sido diseñado pensando en tu comodidad. Iluminación cálida, música envolvente y aromas que curan.</p>
+            <p>Hemos creado un santuario donde puedes desconectar del estrés diario y sumergirte en una experiencia sensorial completa.</p>
+        </div>
+        <div class="bloque-imagen">
+             <img src="{{ asset('imagen/sinfoto.jpg') }}" alt="Instalaciones Aura">
+        </div>
     </div>
 
-    <!-- NUEVA SECCIÓN: Nuestro Compromiso -->
     <div class="seccion-compromiso">
-        <h3>Nuestro Compromiso</h3>
-        <p>En AURA BEAUTY & SPA nos comprometemos a:</p>
-        <ul class="lista-compromisos">
-            <li>Ofrecer servicios de la más alta calidad con productos seguros y efectivos</li>
-            <li>Mantener los más altos estándares de higiene y seguridad</li>
-            <li>Brindar atención personalizada adaptada a tus necesidades específicas</li>
-            <li>Respetar tu tiempo con puntualidad en cada cita</li>
-            <li>Escuchar tus inquietudes y superar tus expectativas</li>
-            <li>Crear experiencias memorables que te hagan volver</li>
-        </ul>
+        <div class="contenido-compromiso">
+            <h3>Nuestro Compromiso Contigo</h3>
+            <div class="lista-columnas">
+                <ul class="lista-compromisos">
+                    <li>Servicios de alta calidad y productos seguros</li>
+                    <li>Estándares hospitalarios de higiene</li>
+                    <li>Atención 100% personalizada</li>
+                </ul>
+                <ul class="lista-compromisos">
+                    <li>Puntualidad rigurosa en cada cita</li>
+                    <li>Escucha activa de tus necesidades</li>
+                    <li>Experiencias memorables garantizadas</li>
+                </ul>
+            </div>
+        </div>
     </div>
 
     <div class="cta-nosotros">
-        <p>¿Lista para tu transformación?</p>
-        <a href="{{ route('reservaciones') }}" class="btn-agendar">Agenda tu cita</a>
+        <div class="cta-contenido">
+            <h2>¿Lista para tu transformación?</h2>
+            <p>El momento de cuidarte es ahora.</p>
+            <a href="{{ route('reservaciones') }}" class="btn-agendar">Agenda tu cita hoy</a>
+        </div>
     </div>
 </div>
 
 <style>
-    /* * Esta regla anulará el fondo global solo para esta página 
-     * si se usa en este archivo.
-     */
+    /* --- ESTILOS GENERALES --- */
     body {
-        background-color: var(--color-fondo); /* Fondo cálido de AURA */
+        background-color: var(--color-fondo);
+        overflow-x: hidden;
     }
 
-    /* * Este .seccion-titulo anulará el .seccion-titulo global de style.css
-     * si se usa aquí, dándole el fondo degradado que pediste.
-     */
-    .seccion-titulo {
-        /* AJUSTE CLAVE 1: Usamos el degradado de AURA para el FONDO. */
-        background: linear-gradient(135deg, var(--color-tarjeta) 0%, var(--color-acento-claro) 100%);
-        
-        /* AJUSTE CLAVE 2: Usamos el color de texto de AURA. */
-        color: var(--color-texto); 
-        
-        padding: 2rem;
-        margin: 0 0 2rem 0;
-        text-align: center;
-        font-family: var(--fuente-cursiva); /* Fuente de AURA */
-        font-size: 3rem; 
-        font-weight: 300;
-        letter-spacing: 2px;
-    }
-    
-    .nosotros-contenido-nuevo {
-        max-width: 900px;
+    .nosotros-wrapper {
+        max-width: 1200px;
         margin: 0 auto;
-        padding: 2rem;
+        padding: 0 2rem 4rem 2rem;
     }
-    
-    .intro-nosotros {
-        margin-bottom: 2.5rem;
-    }
-    
-    .texto-destacado {
-        font-size: 1.2rem;
-        line-height: 1.8;
-        color: var(--color-texto);
+
+    /* --- HEADER --- */
+    .header-nosotros {
         text-align: center;
-        padding: 1.5rem;
-        /* Fondo con degradado suave de la paleta AURA */
-        background: linear-gradient(135deg, var(--color-tarjeta) 0%, var(--color-acento-claro) 100%); 
-        border-radius: 10px;
-        /* Borde con el color principal de AURA */
-        border-left: 4px solid var(--color-principal); 
-    }
-    
-    .seccion-filosofia {
+        padding: 4rem 1rem;
+        background: linear-gradient(135deg, var(--color-tarjeta) 0%, var(--color-acento-claro) 100%);
+        border-radius: 0 0 50% 50% / 20px;
         margin-bottom: 3rem;
-        padding: 2rem;
-        background: var(--color-tarjeta);
-        border-radius: 10px;
-        box-shadow: 0 2px 10px rgba(92, 75, 69, 0.05); /* Sombra cálida */
     }
-    
-    .seccion-filosofia h3 {
-        color: var(--color-principal); /* Color principal de AURA */
-        font-family: var(--fuente-titulos); /* Fuente de AURA */
-        font-size: 1.8rem;
-        margin-bottom: 1rem;
+
+    .seccion-titulo {
+        font-family: var(--fuente-cursiva);
+        font-size: 3.5rem;
+        color: var(--color-principal);
+        margin: 0;
+        font-weight: 300;
+    }
+
+    .subtitulo-header {
+        font-size: 1.2rem;
+        color: var(--color-texto);
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        margin-top: 0.5rem;
+        opacity: 0.8;
+    }
+
+    /* --- INTRO --- */
+    .intro-bloque {
+        max-width: 800px;
+        margin: 0 auto 5rem auto;
         text-align: center;
     }
-    
-    .seccion-filosofia p {
-        font-size: 1.1rem;
+
+    .texto-destacado {
+        font-size: 1.3rem;
         line-height: 1.8;
         color: var(--color-texto);
+        border-bottom: 2px solid var(--color-acento-claro);
+        padding-bottom: 2rem;
+    }
+
+    /* --- ZIG-ZAG LAYOUT --- */
+    .bloque-zigzag {
+        display: flex;
+        align-items: center;
+        gap: 4rem;
+        margin-bottom: 6rem;
+    }
+
+    .bloque-zigzag.inverso {
+        flex-direction: row-reverse;
+    }
+
+    .bloque-texto {
+        flex: 1;
+    }
+
+    .bloque-imagen {
+        flex: 1;
+        position: relative;
+    }
+
+    .bloque-imagen img {
+        width: 100%;
+        height: auto;
+        border-radius: 20px 0 20px 0;
+        box-shadow: 10px 10px 30px rgba(92, 75, 69, 0.15);
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .bloque-imagen:hover img {
+        transform: scale(1.02);
+    }
+
+    .bloque-texto h3 {
+        font-family: var(--fuente-titulos);
+        color: var(--color-principal);
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+        position: relative;
+        display: inline-block;
+    }
+    
+    .bloque-texto h3::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 0;
+        width: 50px;
+        height: 3px;
+        background-color: var(--color-acento-claro);
+    }
+
+    .bloque-texto p {
+        font-size: 1.1rem;
+        color: var(--color-texto);
+        line-height: 1.8;
+        margin-bottom: 1.5rem;
         text-align: justify;
     }
-    
-    .seccion-filosofia em {
-        color: var(--color-principal); /* Color principal de AURA */
-        font-weight: 600;
-        font-style: normal;
+
+    .cita-aura {
+        font-family: var(--fuente-cursiva);
+        font-size: 1.8rem;
+        color: var(--color-principal);
+        margin: 2rem 0;
+        border-left: 3px solid var(--color-principal);
+        padding-left: 1rem;
     }
 
-    /* NUEVOS ESTILOS PARA SECCIONES ADICIONALES */
-    .seccion-historia,
-    .seccion-equipo,
-    .seccion-espacio,
-    .seccion-compromiso {
+    /* --- SECCIÓN VALORES (CORREGIDA) --- */
+    .seccion-valores {
+        margin-bottom: 6rem;
+        padding: 3rem;
+        background-color: rgba(255,255,255, 0.5);
+        border-radius: 30px;
+        /* Estructura Vertical: Título arriba, Grid abajo */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .titulo-centro {
+        text-align: center;
+        font-family: var(--fuente-titulos);
+        color: var(--color-principal);
+        font-size: 2.5rem;
         margin-bottom: 3rem;
-        padding: 2rem;
-        background: var(--color-tarjeta);
-        border-radius: 10px;
-        box-shadow: 0 2px 10px rgba(92, 75, 69, 0.05);
+        width: 100%;
     }
 
-    .seccion-historia h3,
-    .seccion-equipo h3,
-    .seccion-espacio h3,
+    .valores-grid {
+        /* Estructura Horizontal de tarjetas */
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: stretch;
+        gap: 2rem;
+        width: 100%;
+    }
+
+    .valor-card {
+        flex: 1;
+        background: var(--color-tarjeta);
+        padding: 2.5rem;
+        border-radius: 15px;
+        text-align: center;
+        transition: all 0.3s ease;
+        border: 1px solid transparent;
+        box-shadow: 0 4px 15px rgba(92, 75, 69, 0.05);
+    }
+
+    .valor-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(92, 75, 69, 0.15);
+        border-color: var(--color-acento-claro);
+    }
+
+    .icono-contenedor {
+        font-size: 3.5rem;
+        margin-bottom: 1rem;
+        background: linear-gradient(135deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.8) 100%);
+        width: 80px;
+        height: 80px;
+        line-height: 80px;
+        border-radius: 50%;
+        margin: 0 auto 1.5rem auto;
+    }
+
+    .valor-card h4 {
+        color: var(--color-principal);
+        font-size: 1.4rem;
+        margin-bottom: 1rem;
+    }
+
+    /* --- COMPROMISO --- */
+    .seccion-compromiso {
+        background: var(--color-tarjeta);
+        padding: 4rem;
+        border-radius: 20px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.03);
+        margin-bottom: 6rem;
+    }
+
     .seccion-compromiso h3 {
+        text-align: center;
         color: var(--color-principal);
         font-family: var(--fuente-titulos);
-        font-size: 1.8rem;
-        margin-bottom: 1rem;
-        text-align: center;
+        font-size: 2rem;
+        margin-bottom: 2rem;
     }
 
-    .seccion-historia p,
-    .seccion-equipo p,
-    .seccion-espacio p,
-    .seccion-compromiso p {
-        font-size: 1.1rem;
-        line-height: 1.8;
-        color: var(--color-texto);
-        text-align: justify;
-        margin-bottom: 1rem;
-    }
-
-    .seccion-historia p:last-child,
-    .seccion-equipo p:last-child,
-    .seccion-espacio p:last-child {
-        margin-bottom: 0;
+    .lista-columnas {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
     }
 
     .lista-compromisos {
         list-style: none;
         padding: 0;
-        margin-top: 1.5rem;
+        margin: 0;
     }
 
     .lista-compromisos li {
-        font-size: 1.05rem;
-        line-height: 1.8;
-        color: var(--color-texto);
-        padding: 0.8rem 0 0.8rem 2.5rem;
+        margin-bottom: 1.2rem;
+        padding-left: 2rem;
         position: relative;
-        text-align: left;
+        font-size: 1.1rem;
+        color: var(--color-texto);
     }
 
-    .lista-compromisos li:before {
-        content: "✓";
+    .lista-compromisos li::before {
+        content: "✦";
         position: absolute;
-        left: 0.5rem;
+        left: 0;
         color: var(--color-principal);
-        font-weight: bold;
-        font-size: 1.3rem;
     }
-    
-    .valores-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 2rem;
-        margin-bottom: 3rem;
-    }
-    
-    .valor-card {
-        background: var(--color-tarjeta);
-        padding: 2rem;
-        border-radius: 10px;
-        box-shadow: 0 4px 15px rgba(92, 75, 69, 0.08); /* Sombra cálida */
-        text-align: center;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    
-    .valor-card:hover {
-        transform: translateY(-5px);
-        /* Sombra con el color principal de AURA */
-        box-shadow: 0 6px 20px rgba(var(--color-principal-rgb), 0.2); 
-    }
-    
-    .icono {
-        font-size: 3rem;
-        margin-bottom: 1rem;
-    }
-    
-    .valor-card h4 {
-        color: var(--color-principal); /* Color principal de AURA */
-        font-family: var(--fuente-titulos); /* Fuente de AURA */
-        font-size: 1.3rem;
-        margin-bottom: 0.8rem;
-    }
-    
-    .valor-card p {
-        color: var(--color-texto);
-        opacity: 0.9;
-        line-height: 1.6;
-        font-size: 0.95rem;
-    }
-    
+
+    /* --- CTA --- */
     .cta-nosotros {
-        /* Fondo con el color principal de AURA */
-        background: var(--color-principal); 
-        padding: 2.5rem;
-        border-radius: 15px;
+        position: relative;
+        padding: 4rem 2rem;
         text-align: center;
-        color: white; /* Texto blanco para contraste */
+        background: var(--color-principal);
+        border-radius: 20px;
+        color: #fff;
+        overflow: hidden;
     }
-    
-    .cta-nosotros p {
-        font-size: 1.5rem;
-        margin-bottom: 1.5rem;
+
+    .cta-nosotros::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+        pointer-events: none;
+    }
+
+    .cta-contenido {
+        position: relative;
+        z-index: 2;
+    }
+
+    .cta-nosotros h2 {
+        font-family: var(--fuente-cursiva);
+        font-size: 3rem;
+        margin-bottom: 0.5rem;
         font-weight: 300;
     }
-    
+
+    .cta-nosotros p {
+        font-size: 1.2rem;
+        margin-bottom: 2rem;
+        opacity: 0.9;
+    }
+
     .btn-agendar {
         display: inline-block;
-        background: var(--color-tarjeta); /* Botón blanco */
-        color: var(--color-principal); /* Texto con color principal */
-        font-family: var(--fuente-titulos); /* Fuente de AURA */
-        padding: 1rem 3rem;
+        background-color: #fff;
+        color: var(--color-principal);
+        padding: 1rem 3.5rem;
         border-radius: 50px;
         text-decoration: none;
-        font-weight: 600;
-        font-size: 1.1rem;
+        font-weight: bold;
+        letter-spacing: 1px;
+        text-transform: uppercase;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     }
-    
+
     .btn-agendar:hover {
-        transform: scale(1.05);
-        box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-        background: var(--color-acento-claro); /* Hover con fondo beige claro */
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        background-color: var(--color-acento-claro);
     }
-    
-    @media (max-width: 768px) {
-        .nosotros-contenido-nuevo {
-            padding: 1rem;
-        }
-        
-        .seccion-titulo {
-            font-size: 2.2rem; /* Ajustado para móvil */
-            padding: 1.5rem;
-        }
-        
-        .texto-destacado {
-            font-size: 1rem;
-            padding: 1rem;
+
+    /* --- RESPONSIVE --- */
+    @media (max-width: 900px) {
+        .bloque-zigzag, 
+        .bloque-zigzag.inverso {
+            flex-direction: column;
+            gap: 2rem;
+            margin-bottom: 4rem;
         }
 
-        .seccion-historia,
-        .seccion-equipo,
-        .seccion-espacio,
-        .seccion-compromiso {
-            padding: 1.5rem;
+        .bloque-imagen {
+            order: -1;
+            width: 100%;
         }
 
-        .seccion-historia h3,
-        .seccion-equipo h3,
-        .seccion-espacio h3,
-        .seccion-compromiso h3 {
-            font-size: 1.5rem;
-        }
-
-        .seccion-historia p,
-        .seccion-equipo p,
-        .seccion-espacio p,
-        .seccion-compromiso p {
-            font-size: 1rem;
-            text-align: justify;
-        }
-
-        .lista-compromisos li {
-            font-size: 0.95rem;
-            padding-left: 2rem;
-        }
-        
         .valores-grid {
-            grid-template-columns: 1fr;
-            gap: 1.5rem;
+            flex-direction: column; /* Celular: Tarjetas verticales */
         }
-        
-        .cta-nosotros p {
-            font-size: 1.2rem;
+
+        .lista-columnas {
+            grid-template-columns: 1fr;
+        }
+
+        .seccion-titulo {
+            font-size: 2.5rem;
+        }
+
+        .seccion-compromiso {
+            padding: 2rem;
         }
     }
 </style>

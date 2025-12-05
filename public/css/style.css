@@ -1061,4 +1061,248 @@ footer .social-links a:hover {
 }
 
 
+/* =========================================
+   ESTILOS NUEVOS PARA LA BOUTIQUE (PRODUCTOS)
+   ========================================= */
+
+/* Hero Boutique: Más limpio y sofisticado */
+.hero-boutique {
+    text-align: center;
+    padding: 5rem 1rem;
+    /* Degradado sutil para fondo elegante */
+    background: linear-gradient(135deg, var(--color-acento-claro) 0%, #fff 100%);
+    margin-bottom: 3rem;
+    border-radius: 0 0 30px 30px; /* Curva suave abajo */
+}
+
+.hero-boutique-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.etiqueta-destacada {
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 0.85rem;
+    color: var(--color-texto);
+    display: block;
+    margin-bottom: 1rem;
+    opacity: 0.7;
+    font-weight: 600;
+}
+
+.hero-boutique h1 {
+    font-family: var(--fuente-titulos);
+    font-size: 3.5rem;
+    color: var(--color-principal);
+    margin-bottom: 1rem;
+}
+
+.hero-boutique p {
+    font-size: 1.1rem;
+    color: #666;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* Barra de Filtros (Estilo Botones Píldora) */
+.filtros-container {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 4rem;
+    flex-wrap: wrap;
+    padding: 0 1rem;
+}
+
+.filtro-btn {
+    background: transparent;
+    border: 1px solid #e0e0e0;
+    padding: 0.6rem 1.8rem;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: var(--fuente-cuerpo);
+    transition: all 0.3s ease;
+    color: #888;
+    font-size: 0.95rem;
+}
+
+.filtro-btn.activo, .filtro-btn:hover {
+    background: var(--color-principal);
+    color: white;
+    border-color: var(--color-principal);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(185, 141, 123, 0.3);
+}
+
+/* Grid de Productos Premium */
+.productos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 3rem; /* Más espacio entre tarjetas para que 'respiren' */
+    padding: 0 2rem 5rem 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.producto-card-premium {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    /* Sombra muy suave inicial */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgba(0,0,0,0.02);
+}
+
+.producto-card-premium:hover {
+    transform: translateY(-10px); /* Flota al pasar el mouse */
+    box-shadow: 0 25px 50px rgba(185, 141, 123, 0.15); /* Sombra color principal */
+}
+
+/* Contenedor de Imagen */
+.img-wrapper {
+    position: relative;
+    height: 320px; /* Imágenes altas y elegantes */
+    overflow: hidden;
+    background: #f9f9f9;
+}
+
+.img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+}
+
+.producto-card-premium:hover .img-wrapper img {
+    transform: scale(1.08); /* Zoom suave */
+}
+
+/* Badge "Recomendado" */
+.badge-nuevo {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 0.4rem 1rem;
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 30px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    color: var(--color-texto);
+    letter-spacing: 1px;
+}
+
+/* Información del Producto */
+.info-wrapper {
+    padding: 1.8rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.info-top h3 {
+    font-family: var(--fuente-titulos);
+    font-size: 1.4rem;
+    margin-bottom: 0.8rem;
+    color: var(--color-texto);
+    line-height: 1.3;
+}
+
+.descripcion {
+    font-size: 0.95rem;
+    color: #888;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    /* Cortar texto tras 3 líneas */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Footer de la tarjeta (Precio + Botón) */
+.info-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #f5f5f5;
+    padding-top: 1.2rem;
+    margin-top: auto;
+}
+
+.precio {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--color-principal);
+    font-family: var(--fuente-titulos);
+}
+
+.btn-comprar-icon {
+    text-decoration: none;
+    background: var(--color-texto);
+    color: white;
+    padding: 0.7rem 1.2rem;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    transition: background 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+}
+
+.btn-comprar-icon:hover {
+    background: var(--color-principal);
+}
+
+/* Banner Asesoría */
+.asesoria-banner {
+    background-color: var(--color-acento-claro);
+    padding: 4rem 1rem;
+    text-align: center;
+    margin: 3rem 2rem;
+    border-radius: 20px;
+    border: 1px dashed rgba(185, 141, 123, 0.3); /* Borde decorativo */
+}
+
+.asesoria-content h2 {
+    font-family: var(--fuente-titulos);
+    font-size: 2.2rem;
+    color: var(--color-texto);
+    margin-bottom: 1rem;
+}
+
+.link-asesoria {
+    display: inline-block;
+    margin-top: 1.5rem;
+    font-weight: bold;
+    color: var(--color-principal);
+    text-decoration: none;
+    font-size: 1.1rem;
+    border-bottom: 2px solid var(--color-principal);
+    transition: color 0.3s;
+}
+
+.link-asesoria:hover {
+    color: var(--color-texto);
+    border-color: var(--color-texto);
+}
+
+.sin-resultados {
+    text-align: center;
+    grid-column: 1 / -1;
+    padding: 3rem;
+    color: #999;
+    font-size: 1.2rem;
+}
+
+
+
 
