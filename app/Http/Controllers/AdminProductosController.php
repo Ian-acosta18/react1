@@ -4,38 +4,35 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Productos;
-use Illuminate\Support\Facades\File; // Importación correcta
+use Illuminate\Support\Facades\File; // Corrección importante para borrar imágenes
 
 class AdminProductosController extends Controller
 {
     // 1. REPORTE
-    public function reporte() {
+    public function index() {
         $productos = Productos::all();
-        // Asegúrate de que tu vista esté en resources/views/admin/productos/reporte.blade.php
-        // Si tu archivo se llama 'index.blade.php', cámbialo aquí a 'admin.productos.index'
         return view('admin.productos.reporte', compact('productos'));
     }
 
     // 2. ALTA
-    public function alta() {
+    public function create() {
         return view('admin.productos.create');
     }
 
     // 3. GUARDAR
-    public function guardar(Request $request) {
-        // Validaciones
+    public function store(Request $request) {
         $reglas = [
             'nombre'      => 'required|string|max:100|unique:productos,nombre|not_regex:/^[0-9]+$/', 
             'descripcion' => 'nullable|string|max:500|not_regex:/^[0-9]+$/',
             'precio'      => 'required|numeric|min:0',
             'stock'       => 'nullable|integer|min:0',
-            'imagen'      => 'required|image|mimes:jpeg,png,jpg|max:2048' // Imagen obligatoria al crear
+            'imagen'      => 'required|image|mimes:jpeg,png,jpg|max:2048'
         ];
 
         $mensajes = [
             'nombre.not_regex' => 'El nombre no puede ser solo números.',
             'imagen.required'  => 'La imagen es obligatoria.',
-            'imagen.image'     => 'El archivo debe ser una imagen válida (jpg, png).',
+            'imagen.image'     => 'El archivo debe ser una imagen válida.',
             'imagen.max'       => 'La imagen no puede pesar más de 2MB.'
         ];
 
@@ -47,11 +44,9 @@ class AdminProductosController extends Controller
         $prod->precio = $request->precio;
         $prod->stock = $request->stock ?? 0;
 
-        // Subida de Imagen
         if ($request->hasFile('imagen')) {
             $file = $request->file('imagen');
             $filename = time() . '_' . $file->getClientOriginalName();
-            // Mover a public/imagen
             $file->move(public_path('imagen'), $filename);
             $prod->imagen = 'imagen/' . $filename;
         }
@@ -62,21 +57,19 @@ class AdminProductosController extends Controller
     }
 
     // 4. EDITAR
-    public function editar($id) {
+    public function edit($id) {
         $producto = Productos::find($id);
-        if (!$producto) {
-            return redirect()->route('admin.productos.reporte');
-        }
         return view('admin.productos.edit', compact('producto'));
     }
 
-    // 5. ACTUALIZAR
-    public function actualizar(Request $request) {
-        // Buscamos por el ID que viene oculto en el formulario
+    // 5. ACTUALIZAR (CORREGIDO)
+    public function update(Request $request) { // Ya no pedimos $id aquí
+        
+        // Buscamos el producto usando el ID que viene oculto en el formulario
         $prod = Productos::find($request->id);
 
         if (!$prod) {
-            return redirect()->route('admin.productos.reporte');
+            return redirect()->route('admin.productos.reporte')->with('error', 'Producto no encontrado');
         }
 
         $reglas = [
@@ -84,14 +77,13 @@ class AdminProductosController extends Controller
             'descripcion' => 'nullable|string|max:500|not_regex:/^[0-9]+$/',
             'precio'      => 'required|numeric|min:0',
             'stock'       => 'nullable|integer|min:0',
-            'imagen'      => 'nullable|image|mimes:jpeg,png,jpg|max:2048' // Opcional al editar
+            'imagen'      => 'nullable|image|mimes:jpeg,png,jpg|max:2048' 
         ];
 
         $request->validate($reglas);
 
-        // Lógica de Imagen
         if ($request->hasFile('imagen')) {
-            // Borrar anterior si existe
+            // Borramos imagen vieja
             if ($prod->imagen && File::exists(public_path($prod->imagen))) {
                 File::delete(public_path($prod->imagen));
             }
@@ -113,7 +105,7 @@ class AdminProductosController extends Controller
     }
 
     // 6. ELIMINAR
-    public function eliminar($id) {
+    public function destroy($id) {
         $prod = Productos::find($id);
         
         if ($prod) {
