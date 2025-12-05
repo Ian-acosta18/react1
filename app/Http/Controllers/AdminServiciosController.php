@@ -6,22 +6,18 @@ use Illuminate\Http\Request;
 use App\Models\Servicio;
 use App\Models\Categoria;
 use Session;
-use DB;
-use Storage;
-use File;
+use File; // Importante para poder borrar archivos
 
 class AdminServiciosController extends Controller
 {
     // 1. REPORTE (CONSULTA)
     public function reporte()
     {
-        // CORREGIDO: s.imagen en lugar de s.iamgen
-        $servicios = DB::select("
-            SELECT s.id, s.nombre_servicio, s.precio, s.imagen, c.nombre_categoria 
-            FROM servicios AS s 
-            INNER JOIN categorias AS c ON s.categoria_id = c.id 
-            ORDER BY s.nombre_servicio ASC
-        ");
+        // USO DE ELOQUENT: Es más limpio y trae la relación con categoría automáticamente
+        // Asegúrate de tener la función 'categoria()' en tu modelo Servicio
+        $servicios = Servicio::with('categoria')
+                             ->orderBy('nombre_servicio', 'ASC')
+                             ->get();
 
         return view('admin.servicios.reporte')->with('servicios', $servicios);
     }
@@ -29,14 +25,10 @@ class AdminServiciosController extends Controller
     // 2. ALTA (VISTA)
     public function alta()
     {
-        $categorias = DB::select("SELECT * FROM categorias ORDER BY nombre_categoria ASC");
+        // Obtenemos categorías con Eloquent
+        $categorias = Categoria::orderBy('nombre_categoria', 'ASC')->get();
         
-        $ultimo = DB::select("SELECT id FROM servicios ORDER BY id DESC LIMIT 1");
-        $idsigue = !empty($ultimo) ? $ultimo[0]->id + 1 : 1;
-
-        return view('admin.servicios.alta')
-            ->with('categorias', $categorias)
-            ->with('idsigue', $idsigue);
+        return view('admin.servicios.alta')->with('categorias', $categorias);
     }
 
     // 3. GUARDAR (ACCION)
@@ -44,31 +36,27 @@ class AdminServiciosController extends Controller
     {
         $this->validate($request, [
             'nombre_servicio' => 'required',
-            'precio' => 'required|numeric',
-            'categoria_id' => 'required',
-            'foto' => 'image|mimes:jpg,jpeg,png'
+            'precio'          => 'required|numeric',
+            'categoria_id'    => 'required',
+            'foto'            => 'image|mimes:jpg,jpeg,png' // Validación de imagen
         ]);
 
-        $file = $request->file('foto');
-        $img = ''; // Variable inicial vacía
-        
-        if ($file) {
+        $ruta_imagen = ''; // Valor por defecto
+
+        if ($request->hasFile('foto')) {
+            $file = $request->file('foto');
+            // Generar nombre único: servicio_timestamp.ext
             $img = 'servicio_' . time() . '.' . $file->getClientOriginalExtension();
+            // Mover a public/imagen
             $file->move(public_path('imagen'), $img);
             $ruta_imagen = 'imagen/' . $img;
-        } else {
-            // Si no suben foto, dejamos esto vacío o la ruta por defecto, 
-            // pero es mejor dejarlo vacío y controlarlo en la vista con el @if
-            $ruta_imagen = ''; 
         }
 
         $servicio = new Servicio;
         $servicio->nombre_servicio = $request->nombre_servicio;
-        $servicio->precio = $request->precio;
-        $servicio->categoria_id = $request->categoria_id;
-        
-        // CORREGIDO: propiedad imagen
-        $servicio->imagen = $ruta_imagen; 
+        $servicio->precio          = $request->precio;
+        $servicio->categoria_id    = $request->categoria_id;
+        $servicio->imagen          = $ruta_imagen;
         
         $servicio->save();
 
@@ -79,54 +67,63 @@ class AdminServiciosController extends Controller
     // 4. EDITAR (VISTA)
     public function editar($id)
     {
-        // Buscamos el servicio por ID
-        $servicio = DB::select("SELECT * FROM servicios WHERE id = ?", [$id]);
-        
-        // Buscamos las categorías para llenar el select
-        $categorias = DB::select("SELECT * FROM categorias ORDER BY nombre_categoria ASC");
+        // Buscamos con Eloquent. Si no existe, findOrFail o comprobación manual.
+        $servicio = Servicio::find($id);
+        $categorias = Categoria::orderBy('nombre_categoria', 'ASC')->get();
 
-        if (empty($servicio)) {
+        if (!$servicio) {
+            Session::flash('mensaje', "El servicio no existe.");
             return redirect()->route('admin.servicios.reporte');
         }
 
-        // ATENCIÓN: Aquí llamamos a 'admin.servicios.edit' (coincide con el nombre del archivo)
         return view('admin.servicios.edit')
-            ->with('servicio', $servicio[0])
+            ->with('servicio', $servicio)
             ->with('categorias', $categorias);
     }
 
     // 5. ACTUALIZAR (ACCION)
     public function actualizar(Request $request)
     {
-        // 1. Validamos los datos
+        // 1. Validamos
         $this->validate($request, [
-            'id' => 'required',
+            'id'              => 'required',
             'nombre_servicio' => 'required',
-            'precio' => 'required|numeric',
-            'categoria_id' => 'required'
+            'precio'          => 'required|numeric',
+            'categoria_id'    => 'required',
+            'foto'            => 'nullable|image|mimes:jpg,jpeg,png' // 'nullable' porque la foto es opcional al editar
         ]);
 
-        // 2. Buscamos el servicio usando el Modelo (más fácil para editar)
+        // 2. Buscamos el servicio
         $servicio = Servicio::find($request->id);
         
+        if (!$servicio) {
+            return redirect()->route('admin.servicios.reporte');
+        }
+
         // 3. ¿Subieron nueva foto?
-        $file = $request->file('foto');
-        if ($file) {
-            // Creamos nombre único
+        if ($request->hasFile('foto')) {
+            // A) BORRAR FOTO ANTERIOR SI EXISTE
+            // Verificamos que tenga una imagen guardada y que el archivo físico exista
+            if ($servicio->imagen && File::exists(public_path($servicio->imagen))) {
+                File::delete(public_path($servicio->imagen));
+            }
+
+            // B) SUBIR NUEVA FOTO
+            $file = $request->file('foto');
             $img = 'servicio_' . time() . '.' . $file->getClientOriginalExtension();
-            // Subimos la imagen a public/imagen
             $file->move(public_path('imagen'), $img);
-            // Actualizamos el campo en la BD
+            
+            // Actualizamos la propiedad en el objeto
             $servicio->imagen = 'imagen/' . $img; 
         }
-        // Si no subieron foto, NO tocamos $servicio->imagen, se queda la anterior.
+        // Nota: Si no suben foto, no hacemos nada y se mantiene la ruta anterior.
 
-        // 4. Actualizamos el resto de campos
+        // 4. Actualizamos resto de campos
         $servicio->nombre_servicio = $request->nombre_servicio;
-        $servicio->precio = $request->precio;
-        $servicio->categoria_id = $request->categoria_id;
+        $servicio->precio          = $request->precio;
+        $servicio->categoria_id    = $request->categoria_id;
         
-        // 5. Guardamos
+        // 5. Guardamos cambios
         $servicio->save();
 
         Session::flash('mensaje', "El servicio ha sido actualizado correctamente.");
@@ -136,9 +133,22 @@ class AdminServiciosController extends Controller
     // 6. ELIMINAR (ACCION)
     public function eliminar($id)
     {
-        DB::delete("DELETE FROM servicios WHERE id = ?", [$id]);
+        // Buscamos primero para obtener la info de la imagen
+        $servicio = Servicio::find($id);
+
+        if ($servicio) {
+            // 1. Borrar imagen del servidor si existe
+            if ($servicio->imagen && File::exists(public_path($servicio->imagen))) {
+                File::delete(public_path($servicio->imagen));
+            }
+
+            // 2. Eliminar registro de BD
+            $servicio->delete();
+            Session::flash('mensaje', "Servicio eliminado correctamente.");
+        } else {
+            Session::flash('mensaje', "No se pudo encontrar el servicio a eliminar.");
+        }
         
-        Session::flash('mensaje', "Servicio eliminado correctamente.");
         return redirect()->route('admin.servicios.reporte');
     }
 }

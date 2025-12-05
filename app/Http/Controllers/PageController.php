@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+// Mantenemos esta línea por si necesitas usar SQL directo en el futuro, 
+// aunque para 'servicios' usaremos Eloquent.
+use Illuminate\Support\Facades\DB;
+
 use App\Models\Categoria;
 use App\Models\Reserva;
 use App\Models\Servicio;
@@ -19,12 +23,17 @@ class PageController extends Controller
         return view('pages.inicio');
     }
 
+    /*
+     * MÉTODO SERVICIOS CORREGIDO
+     * Tu vista 'servicios.blade.php' usa un bucle @foreach($categorias...),
+     * por lo tanto, aquí DEBEMOS enviar la variable $categorias.
+     */
     public function servicios() {
-        // 1. Consultamos los servicios de la base de datos
-        $servicios = DB::select("SELECT * FROM servicios ORDER BY nombre_servicio ASC");
+        // Opción Correcta: Traer Categorías con sus Servicios
+        $categorias = Categoria::with('servicios')->get();
 
-        // 2. Enviamos la variable $servicios a la vista
-        return view('pages.servicios')->with('servicios', $servicios);
+        // Usamos compact para enviar la variable $categorias a la vista
+        return view('pages.servicios', compact('categorias'));
     }
 
     public function nosotros() {
@@ -51,14 +60,10 @@ class PageController extends Controller
 
     /**
      * Procesa y almacena una nueva reserva.
-     * Utiliza StoreReservaRequest para la validación (Controlador Ligero).
      */
     public function storeReserva(StoreReservaRequest $request) {
-        // La validación ya fue realizada por StoreReservaRequest
         $validated = $request->validated();
 
-        // Preparamos los datos.
-        // Usamos json_encode en 'servicios' para guardar el array como texto JSON en la BD.
         $reservaData = [
             'nombre'       => $validated['nombres'],
             'apaterno'     => $validated['apellido_paterno'],
@@ -78,7 +83,6 @@ class PageController extends Controller
 
     /**
      * Procesa y almacena un nuevo mensaje de contacto.
-     * Utiliza StoreContactoRequest para la validación.
      */
     public function storeContacto(StoreContactoRequest $request)
     {
@@ -92,7 +96,8 @@ class PageController extends Controller
 
         return back()->with('success', '¡Tu mensaje ha sido enviado correctamente!');
     }
+    
     public function instalaciones() {
-    return view('pages.instalaciones');
-}
+        return view('pages.instalaciones');
+    }
 }

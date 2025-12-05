@@ -69,15 +69,65 @@
         color: #6a5c57;
     }
 
+    /* Estilos para la sección de Nuestro Equipo */
+    .seccion-equipo {
+        margin: 4rem auto 3rem auto;
+        padding: 2rem;
+        background: var(--color-tarjeta);
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(92, 75, 69, 0.05);
+        max-width: 900px;
+    }
+
+    .seccion-equipo h3 {
+        color: var(--color-principal);
+        font-family: var(--fuente-titulos);
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+
+    .seccion-equipo p {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: var(--color-texto);
+        text-align: justify;
+        margin-bottom: 1rem;
+    }
+
+    .seccion-equipo p:last-child {
+        margin-bottom: 0;
+    }
+
     @media (max-width: 768px) {
         .instalaciones-grid {
             grid-template-columns: 1fr;
+        }
+
+        .seccion-equipo {
+            padding: 1.5rem;
+            margin: 3rem 1rem 2rem 1rem;
+        }
+
+        .seccion-equipo h3 {
+            font-size: 1.5rem;
+        }
+
+        .seccion-equipo p {
+            font-size: 1rem;
         }
     }
 </style>
 
 <h2 class="seccion-titulo">Nuestras Instalaciones</h2>
 <p class="intro-texto">Conoce nuestros espacios diseñados para tu comodidad y relajación total.</p>
+
+{{-- Sección de Nuestro Equipo --}}
+<div class="seccion-equipo">
+    <h3>Nuestro Equipo</h3>
+    <p>Contamos con un equipo de especialistas apasionados por su trabajo, constantemente actualizados en las últimas técnicas y tendencias del sector. Cada miembro de AURA está comprometido con brindarte una experiencia única y personalizada.</p>
+    <p>Nuestros profesionales no solo cuentan con certificaciones internacionales, sino que además comparten nuestra filosofía de cuidado integral, donde la belleza exterior es el reflejo del bienestar interior.</p>
+</div>
 
 <div class="instalaciones-grid">
 
