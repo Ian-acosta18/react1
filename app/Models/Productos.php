@@ -17,12 +17,6 @@ class Productos extends Model
         'precio',
         'stock',
         'imagen',
-        'activo' // <--- NUEVO CAMPO
+        'activo' // <--- ¡ESTE ES EL QUE FALTABA!
     ];
-
-    // Scope para filtrar solo los activos (útil para la vista pública)
-    public function scopeActivos($query)
-    {
-        return $query->where('activo', true);
-    }
 }

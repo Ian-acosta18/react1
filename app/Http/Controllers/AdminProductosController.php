@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Productos;
-use App\Models\StockOpcion; // Si usas el selector de stock predefinido (opcional)
+use App\Models\StockOpcion; 
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
 
@@ -18,22 +18,19 @@ class AdminProductosController extends Controller
 
     // 2. ALTA
     public function alta() {
-        // Si usas opciones de stock, las cargamos. Si no, puedes quitar esta línea o dejarla si tienes el modelo.
-        // $stock_opciones = StockOpcion::orderBy('cantidad', 'asc')->get(); 
-        // Si no tienes el modelo StockOpcion, usa:
-        $stock_opciones = collect([]); 
-        
+        // Si no usas StockOpcion, deja esto como array vacío: collect([])
+        $stock_opciones = StockOpcion::orderBy('cantidad', 'asc')->get(); 
         return view('admin.productos.alta', compact('stock_opciones'));
     }
 
     // 3. GUARDAR
     public function guardar(Request $request) {
         $reglas = [
-            'nombre'      => 'required|string|max:100|unique:productos,nombre|not_regex:/^[0-9]+$/', 
+            'nombre'      => 'required|string|max:100|not_regex:/^[0-9]+$/', 
             'descripcion' => 'nullable|string|max:500|not_regex:/^[0-9]+$/',
             'precio'      => 'required|numeric|min:0',
             'stock'       => 'nullable|integer|min:0',
-            'activo'      => 'required|boolean', // <--- VALIDACIÓN NUEVA
+            'activo'      => 'required|boolean', // <--- VALIDAR ESTADO
             'imagen'      => 'required|image|mimes:jpeg,png,jpg|max:2048'
         ];
 
@@ -46,11 +43,11 @@ class AdminProductosController extends Controller
         $request->validate($reglas, $mensajes);
 
         $prod = new Productos();
-        $prod->nombre      = $request->nombre;
+        $prod->nombre = $request->nombre;
         $prod->descripcion = $request->descripcion;
-        $prod->precio      = $request->precio;
-        $prod->stock       = $request->stock ?? 0;
-        $prod->activo      = $request->activo; // <--- GUARDAR ESTADO
+        $prod->precio = $request->precio;
+        $prod->stock = $request->stock ?? 0;
+        $prod->activo = $request->activo; // <--- GUARDAR EL ESTADO
 
         if ($request->hasFile('imagen')) {
             $file = $request->file('imagen');
@@ -87,7 +84,7 @@ class AdminProductosController extends Controller
             'descripcion' => 'nullable|string|max:500|not_regex:/^[0-9]+$/',
             'precio'      => 'required|numeric|min:0',
             'stock'       => 'nullable|integer|min:0',
-            'activo'      => 'required|boolean', // <--- VALIDACIÓN NUEVA
+            'activo'      => 'required|boolean', // <--- VALIDAR ESTADO
             'imagen'      => 'nullable|image|mimes:jpeg,png,jpg|max:2048' 
         ];
 
@@ -103,11 +100,11 @@ class AdminProductosController extends Controller
             $prod->imagen = 'imagen/' . $filename;
         }
         
-        $prod->nombre      = $request->nombre;
+        $prod->nombre = $request->nombre;
         $prod->descripcion = $request->descripcion;
-        $prod->precio      = $request->precio;
-        $prod->stock       = $request->stock;
-        $prod->activo      = $request->activo; // <--- ACTUALIZAR ESTADO
+        $prod->precio = $request->precio;
+        $prod->stock = $request->stock;
+        $prod->activo = $request->activo; // <--- ACTUALIZAR EL ESTADO
 
         $prod->save();
 
