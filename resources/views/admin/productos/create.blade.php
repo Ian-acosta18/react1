@@ -38,7 +38,7 @@
             <label>Imagen:</label>
             <input type="file" name="imagen" accept="image/*" required style="padding: 10px; background: white;">
             @error('imagen')
-                <span style="color: red; font-size: 0.9em;">{{ $message }}</span>
+            <div style="color:red">{{ $message }}</div>
             @enderror
         </div>
 

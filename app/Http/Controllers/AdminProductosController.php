@@ -24,27 +24,20 @@ class AdminProductosController extends Controller
     // 3. GUARDAR PRODUCTO
     public function store(Request $request) {
         $reglas = [
-            'nombre'      => 'required|string|max:100|unique:productos,nombre',
-            'descripcion' => 'nullable|string|max:500',
+            // not_regex:/^[0-9]+$/  -> Falla si el texto son solo números
+            'nombre'      => 'required|string|max:100|unique:productos,nombre|not_regex:/^[0-9]+$/', 
+            'descripcion' => 'nullable|string|max:500|not_regex:/^[0-9]+$/',
             'precio'      => 'required|numeric|min:0',
             'stock'       => 'nullable|integer|min:0',
-            'imagen'      => 'required|image|mimes:jpeg,png,jpg|max:2048'
+            'imagen'      => 'required|image|mimes:jpeg,png,jpg|max:2048' // Max 2MB
         ];
 
-        // Mensajes personalizados en español
         $mensajes = [
-            'nombre.required' => 'El nombre del producto es obligatorio.',
-            'nombre.max'      => 'El nombre no puede tener más de 100 caracteres.',
-            'nombre.unique'   => 'Ya existe un producto registrado con este nombre.',
-            'precio.required' => 'El precio es obligatorio.',
-            'precio.numeric'  => 'El precio debe ser un valor numérico.',
-            'precio.min'      => 'El precio no puede ser negativo.',
-            'stock.integer'   => 'El stock debe ser un número entero.',
-            'stock.min'       => 'El stock no puede ser negativo.',
-            'imagen.required' => 'Debes subir una imagen para el producto.',
-            'imagen.image'    => 'El archivo subido debe ser una imagen.',
-            'imagen.mimes'    => 'La imagen debe ser de tipo: jpeg, png o jpg.',
-            'imagen.max'      => 'La imagen es demasiado pesada (máximo 2MB).'
+            'nombre.not_regex'      => 'El nombre no puede estar compuesto solo por números.',
+            'descripcion.not_regex' => 'La descripción no puede ser solo números.',
+            'imagen.required'       => 'La imagen es obligatoria al crear un producto.',
+            'imagen.max'            => 'La imagen no puede pesar más de 2MB.',
+            // ... otros mensajes personalizados ...
         ];
 
         $request->validate($reglas, $mensajes);
@@ -78,31 +71,26 @@ class AdminProductosController extends Controller
     public function update(Request $request, $id) {
         $prod = Productos::find($id);
 
-       $reglas = [
-            'nombre'      => 'required|string|max:100', 
-            'descripcion' => 'nullable|string|max:500',
+        $reglas = [
+            'nombre'      => 'required|string|max:100|not_regex:/^[0-9]+$/',
+            'descripcion' => 'nullable|string|max:500|not_regex:/^[0-9]+$/',
             'precio'      => 'required|numeric|min:0',
             'stock'       => 'nullable|integer|min:0',
-            'imagen'      => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
+            'imagen'      => 'nullable|image|mimes:jpeg,png,jpg' 
         ];
 
         $mensajes = [
-            'nombre.required' => 'El nombre del producto es obligatorio.',
-            'nombre.max'      => 'El nombre no puede tener más de 100 caracteres.',
-            'precio.required' => 'El precio es obligatorio.',
-            'precio.numeric'  => 'El precio debe ser un valor numérico.',
-            'precio.min'      => 'El precio no puede ser negativo.',
-            'stock.integer'   => 'El stock debe ser un número entero.',
-            'stock.min'       => 'El stock no puede ser negativo.',
-            'imagen.image'    => 'El archivo debe ser una imagen válida.',
-            'imagen.mimes'    => 'La imagen debe ser de tipo: jpeg, png o jpg.',
-            'imagen.max'      => 'La imagen es demasiado pesada (máximo 2MB).'
+            'nombre.not_regex'      => 'El nombre no puede estar compuesto solo por números.',
+            'descripcion.not_regex' => 'La descripción no puede ser solo números.',
+            'imagen.image'          => 'El archivo debe ser una imagen válida.',
+            'imagen.max'            => 'La imagen no puede pesar más de 2MB.'
         ];
 
         $request->validate($reglas, $mensajes);
 
+        // Lógica para mantener la imagen anterior si no se sube una nueva
         if ($request->hasFile('imagen')) {
-            // Borrar imagen anterior
+            // Solo si suben una nueva, borramos la vieja
             if ($prod->imagen && file_exists(public_path($prod->imagen))) {
                 @unlink(public_path($prod->imagen));
             }
@@ -120,7 +108,6 @@ class AdminProductosController extends Controller
 
         $prod->save();
 
-        // CORRECCIÓN REDIRECCIÓN
         return redirect()->route('admin.productos.reporte')->with('mensaje', 'Producto actualizado exitosamente');
     }
 
