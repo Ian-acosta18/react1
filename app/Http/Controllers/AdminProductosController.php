@@ -4,33 +4,33 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Productos;
-use App\Models\StockOpcion; 
+use App\Models\StockOpcion; // Si no lo usas, puedes borrar esta línea
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
 
 class AdminProductosController extends Controller
 {
-    // 1. REPORTE
+    // 1. REPORTE (Antes index)
     public function reporte() {
         $productos = Productos::all();
         return view('admin.productos.reporte', compact('productos'));
     }
 
-    // 2. ALTA
+    // 2. ALTA (Antes create)
     public function alta() {
-        // Si no usas StockOpcion, deja esto como array vacío: collect([])
-        $stock_opciones = StockOpcion::orderBy('cantidad', 'asc')->get(); 
+        // Array vacío si no usas stock predefinido
+        $stock_opciones = collect([]); 
         return view('admin.productos.alta', compact('stock_opciones'));
     }
 
-    // 3. GUARDAR
+    // 3. GUARDAR (Antes store)
     public function guardar(Request $request) {
         $reglas = [
-            'nombre'      => 'required|string|max:100|not_regex:/^[0-9]+$/', 
+            'nombre'      => 'required|string|max:100|unique:productos,nombre|not_regex:/^[0-9]+$/', 
             'descripcion' => 'nullable|string|max:500|not_regex:/^[0-9]+$/',
             'precio'      => 'required|numeric|min:0',
             'stock'       => 'nullable|integer|min:0',
-            'activo'      => 'required|boolean', // <--- VALIDAR ESTADO
+            'activo'      => 'required|boolean', // Validamos el campo activo
             'imagen'      => 'required|image|mimes:jpeg,png,jpg|max:2048'
         ];
 
@@ -43,11 +43,11 @@ class AdminProductosController extends Controller
         $request->validate($reglas, $mensajes);
 
         $prod = new Productos();
-        $prod->nombre = $request->nombre;
+        $prod->nombre      = $request->nombre;
         $prod->descripcion = $request->descripcion;
-        $prod->precio = $request->precio;
-        $prod->stock = $request->stock ?? 0;
-        $prod->activo = $request->activo; // <--- GUARDAR EL ESTADO
+        $prod->precio      = $request->precio;
+        $prod->stock       = $request->stock ?? 0;
+        $prod->activo      = $request->activo; // Guardamos el estado
 
         if ($request->hasFile('imagen')) {
             $file = $request->file('imagen');
@@ -62,7 +62,7 @@ class AdminProductosController extends Controller
         return redirect()->route('admin.productos.reporte');
     }
 
-    // 4. EDITAR
+    // 4. EDITAR (Antes edit)
     public function editar($id) {
         $producto = Productos::find($id);
         if (!$producto) {
@@ -71,8 +71,9 @@ class AdminProductosController extends Controller
         return view('admin.productos.edit', compact('producto'));
     }
 
-    // 5. ACTUALIZAR
+    // 5. ACTUALIZAR (Antes update)
     public function actualizar(Request $request) {
+        // Buscamos por el ID del formulario oculto
         $prod = Productos::find($request->id);
 
         if (!$prod) {
@@ -84,7 +85,7 @@ class AdminProductosController extends Controller
             'descripcion' => 'nullable|string|max:500|not_regex:/^[0-9]+$/',
             'precio'      => 'required|numeric|min:0',
             'stock'       => 'nullable|integer|min:0',
-            'activo'      => 'required|boolean', // <--- VALIDAR ESTADO
+            'activo'      => 'required|boolean', // Validamos el campo activo
             'imagen'      => 'nullable|image|mimes:jpeg,png,jpg|max:2048' 
         ];
 
@@ -100,11 +101,11 @@ class AdminProductosController extends Controller
             $prod->imagen = 'imagen/' . $filename;
         }
         
-        $prod->nombre = $request->nombre;
+        $prod->nombre      = $request->nombre;
         $prod->descripcion = $request->descripcion;
-        $prod->precio = $request->precio;
-        $prod->stock = $request->stock;
-        $prod->activo = $request->activo; // <--- ACTUALIZAR EL ESTADO
+        $prod->precio      = $request->precio;
+        $prod->stock       = $request->stock;
+        $prod->activo      = $request->activo; // Actualizamos el estado
 
         $prod->save();
 
@@ -112,7 +113,7 @@ class AdminProductosController extends Controller
         return redirect()->route('admin.productos.reporte');
     }
 
-    // 6. ELIMINAR
+    // 6. ELIMINAR (Antes destroy)
     public function eliminar($id) {
         $prod = Productos::find($id);
         

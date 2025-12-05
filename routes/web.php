@@ -53,12 +53,15 @@ Route::middleware(['validaradmin'])->prefix('admin')->name('admin.')->group(func
     Route::get('/servicios/eliminar/{id}', [AdminServiciosController::class, 'eliminar'])->name('servicios.eliminar');
 
     
-    Route::get('/productos', [AdminProductosController::class, 'index'])->name('productos.reporte');
-    Route::get('/productos/alta', [AdminProductosController::class, 'create'])->name('productos.alta');
-    Route::post('/productos/guardar', [AdminProductosController::class, 'store'])->name('productos.guardar');
-    Route::get('/productos/editar/{id}', [AdminProductosController::class, 'edit'])->name('productos.editar');
-   Route::post('/productos/actualizar', [AdminProductosController::class, 'update'])->name('productos.actualizar');
-    Route::get('/productos/eliminar/{id}', [AdminProductosController::class, 'destroy'])->name('productos.eliminar');
+    // --- PRODUCTOS (CORREGIDO) ---
+    // Antes llamabas a 'index', 'create', etc. Ahora llamamos a los nombres reales.
+    
+    Route::get('/productos', [AdminProductosController::class, 'reporte'])->name('productos.reporte');
+    Route::get('/productos/alta', [AdminProductosController::class, 'alta'])->name('productos.alta');
+    Route::post('/productos/guardar', [AdminProductosController::class, 'guardar'])->name('productos.guardar');
+    Route::get('/productos/editar/{id}', [AdminProductosController::class, 'editar'])->name('productos.editar');
+    Route::post('/productos/actualizar', [AdminProductosController::class, 'actualizar'])->name('productos.actualizar');
+    Route::get('/productos/eliminar/{id}', [AdminProductosController::class, 'eliminar'])->name('productos.eliminar');
     
   
     Route::get('/instalaciones', [AdminInstalacionesController::class, 'reporte'])->name('instalaciones.reporte');
