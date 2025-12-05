@@ -52,8 +52,7 @@ Route::middleware(['validaradmin'])->prefix('admin')->name('admin.')->group(func
     Route::post('/servicios/actualizar', [AdminServiciosController::class, 'actualizar'])->name('servicios.actualizar');
     Route::get('/servicios/eliminar/{id}', [AdminServiciosController::class, 'eliminar'])->name('servicios.eliminar');
 
-    // --- PRODUCTOS (CORREGIDO: Mapeamos rutas a métodos en Inglés: index, create...) ---
-    // La URL y el nombre de ruta siguen igual, pero llamamos a 'index' en vez de 'reporte'
+    
     Route::get('/productos', [AdminProductosController::class, 'index'])->name('productos.reporte');
     Route::get('/productos/alta', [AdminProductosController::class, 'create'])->name('productos.alta');
     Route::post('/productos/guardar', [AdminProductosController::class, 'store'])->name('productos.guardar');
@@ -61,9 +60,7 @@ Route::middleware(['validaradmin'])->prefix('admin')->name('admin.')->group(func
     Route::post('/productos/actualizar/{id}', [AdminProductosController::class, 'update'])->name('productos.actualizar');
     Route::get('/productos/eliminar/{id}', [AdminProductosController::class, 'destroy'])->name('productos.eliminar');
     
-    // --- INSTALACIONES (Verifica que tu controlador tenga estos métodos) ---
-    // Si AdminInstalacionesController también es nuevo y usa inglés, debes corregirlo igual que Productos.
-    // Si usa español (reporte, alta...), déjalo así.
+  
     Route::get('/instalaciones', [AdminInstalacionesController::class, 'reporte'])->name('instalaciones.reporte');
     Route::get('/instalaciones/alta', [AdminInstalacionesController::class, 'alta'])->name('instalaciones.alta');
     Route::post('/instalaciones/guardar', [AdminInstalacionesController::class, 'guardar'])->name('instalaciones.guardar');
