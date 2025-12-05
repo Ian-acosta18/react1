@@ -5,6 +5,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AdminServiciosController;
 use App\Http\Controllers\AdminProductosController; 
+use App\Http\Controllers\AdminInstalacionesController;
 
 // ==========================================
 // 1. RUTAS PÚBLICAS (CLIENTES)
@@ -51,21 +52,22 @@ Route::middleware(['validaradmin'])->prefix('admin')->name('admin.')->group(func
     Route::post('/servicios/actualizar', [AdminServiciosController::class, 'actualizar'])->name('servicios.actualizar');
     Route::get('/servicios/eliminar/{id}', [AdminServiciosController::class, 'eliminar'])->name('servicios.eliminar');
 
-    // --- PRODUCTOS (NUEVO) ---
-    Route::get('/productos', [AdminProductosController::class, 'reporte'])->name('productos.reporte');
-    Route::get('/productos/alta', [AdminProductosController::class, 'alta'])->name('productos.alta');
-    Route::post('/productos/guardar', [AdminProductosController::class, 'guardar'])->name('productos.guardar');
-    Route::get('/productos/editar/{id}', [AdminProductosController::class, 'editar'])->name('productos.editar');
-    Route::post('/productos/actualizar', [AdminProductosController::class, 'actualizar'])->name('productos.actualizar');
-    Route::get('/productos/eliminar/{id}', [AdminProductosController::class, 'eliminar'])->name('productos.eliminar');
+    // --- PRODUCTOS (CORREGIDO: Mapeamos rutas a métodos en Inglés: index, create...) ---
+    // La URL y el nombre de ruta siguen igual, pero llamamos a 'index' en vez de 'reporte'
+    Route::get('/productos', [AdminProductosController::class, 'index'])->name('productos.reporte');
+    Route::get('/productos/alta', [AdminProductosController::class, 'create'])->name('productos.alta');
+    Route::post('/productos/guardar', [AdminProductosController::class, 'store'])->name('productos.guardar');
+    Route::get('/productos/editar/{id}', [AdminProductosController::class, 'edit'])->name('productos.editar');
+    Route::post('/productos/actualizar/{id}', [AdminProductosController::class, 'update'])->name('productos.actualizar');
+    Route::get('/productos/eliminar/{id}', [AdminProductosController::class, 'destroy'])->name('productos.eliminar');
     
-    
-    Route::get('/instalaciones', [App\Http\Controllers\AdminInstalacionesController::class, 'reporte'])->name('instalaciones.reporte');
-    Route::get('/instalaciones/alta', [App\Http\Controllers\AdminInstalacionesController::class, 'alta'])->name('instalaciones.alta');
-    Route::post('/instalaciones/guardar', [App\Http\Controllers\AdminInstalacionesController::class, 'guardar'])->name('instalaciones.guardar');
-    Route::get('/instalaciones/editar/{id}', [App\Http\Controllers\AdminInstalacionesController::class, 'editar'])->name('instalaciones.editar');
-    Route::post('/instalaciones/actualizar', [App\Http\Controllers\AdminInstalacionesController::class, 'actualizar'])->name('instalaciones.actualizar');
-    Route::get('/instalaciones/eliminar/{id}', [App\Http\Controllers\AdminInstalacionesController::class, 'eliminar'])->name('instalaciones.eliminar');
-
-
+    // --- INSTALACIONES (Verifica que tu controlador tenga estos métodos) ---
+    // Si AdminInstalacionesController también es nuevo y usa inglés, debes corregirlo igual que Productos.
+    // Si usa español (reporte, alta...), déjalo así.
+    Route::get('/instalaciones', [AdminInstalacionesController::class, 'reporte'])->name('instalaciones.reporte');
+    Route::get('/instalaciones/alta', [AdminInstalacionesController::class, 'alta'])->name('instalaciones.alta');
+    Route::post('/instalaciones/guardar', [AdminInstalacionesController::class, 'guardar'])->name('instalaciones.guardar');
+    Route::get('/instalaciones/editar/{id}', [AdminInstalacionesController::class, 'editar'])->name('instalaciones.editar');
+    Route::post('/instalaciones/actualizar', [AdminInstalacionesController::class, 'actualizar'])->name('instalaciones.actualizar');
+    Route::get('/instalaciones/eliminar/{id}', [AdminInstalacionesController::class, 'eliminar'])->name('instalaciones.eliminar');
 });
