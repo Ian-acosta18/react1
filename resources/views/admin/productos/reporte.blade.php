@@ -1,63 +1,61 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container" style="margin-top: 30px;">
-    <div class="admin-header">
-        <h2>Reporte de Productos</h2>
-        <a href="{{ route('admin.productos.alta') }}" class="btn-nuevo">+ Nuevo Producto</a>
+<div class="admin-content-wrapper">
+    <div class="page-header fade-in">
+        <h2>Catálogo de Productos</h2>
+        <a href="{{ route('admin.productos.alta') }}" class="btn-create-new">+ Nuevo Producto</a>
     </div>
 
     @if(Session::has('mensaje'))
-        <div class="alert alert-success">{{ Session::get('mensaje') }}</div>
+        <div class="alert-premium success fade-in">{{ Session::get('mensaje') }}</div>
     @endif
 
-    <table class="tabla-admin">
-        <thead>
-            <tr>
-                <th>Foto</th>
-                <th>Nombre</th>
-                <th>Descripción</th>
-                <th>Stock</th>
-                <th>Precio</th>
-                <th>Estado</th> {{-- <--- COLUMNA AGREGADA --}}
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($productos as $p)
-            <tr>
-                <td>
-                    @if($p->imagen != "" && file_exists(public_path($p->imagen)))
-                        <img src="{{ asset($p->imagen) }}" alt="foto" width="60" height="60" style="object-fit: cover; border-radius: 5px;">
-                    @else
-                        <img src="{{ asset('imagen/sinfoto.jpg') }}" alt="sin foto" width="60" height="60" style="object-fit: cover; border-radius: 5px; opacity: 0.5;">
-                    @endif
-                </td>
-                <td>{{ $p->nombre }}</td>
-                <td style="max-width: 200px; font-size: 0.9em; color: #666;">{{ Str::limit($p->descripcion, 50) }}</td>
-                <td>{{ $p->stock }}</td>
-                <td>${{ number_format($p->precio, 2) }}</td>
-                
-                {{-- CELDA DE ESTADO (AGREGADA) --}}
-                <td>
-                    @if($p->activo)
-                        <span class="badge bg-success" style="color: green; font-weight: bold; padding: 5px 10px; border-radius: 10px; background-color: #d1fae5;">Activo</span>
-                    @else
-                        <span class="badge bg-secondary" style="color: gray; font-weight: bold; padding: 5px 10px; border-radius: 10px; background-color: #f3f4f6;">Inactivo</span>
-                    @endif
-                </td>
+    <div class="table-card fade-in-up">
+        <div class="table-responsive">
+            <table class="table-premium">
+                <thead>
+                    <tr>
+                        <th>Imagen</th>
+                        <th>Nombre</th>
+                        <th>Precio</th>
+                        <th>Stock</th>
+                        <th>Estado</th> {{-- NUEVA COLUMNA --}}
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($productos as $prod)
+                    <tr>
+                        <td style="width: 100px;">
+                            @if($prod->imagen && file_exists(public_path($prod->imagen)))
+                                <img src="{{ asset($prod->imagen) }}" width="50" style="border-radius:5px;">
+                            @else
+                                <img src="{{ asset('imagen/sinfoto.jpg') }}" width="50" style="opacity:0.5;">
+                            @endif
+                        </td>
+                        <td>{{ $prod->nombre }}</td>
+                        <td>${{ number_format($prod->precio, 2) }}</td>
+                        <td>{{ $prod->stock }}</td>
+                        
+                        {{-- COLUMNA ESTADO --}}
+                        <td>
+                            @if($prod->activo)
+                                <span class="badge bg-success" style="color: green; font-weight: bold;">Activo</span>
+                            @else
+                                <span class="badge bg-secondary" style="color: gray;">Inactivo</span>
+                            @endif
+                        </td>
 
-                <td>
-                    <a href="{{ route('admin.productos.editar', ['id' => $p->id]) }}" class="btn-accion btn-editar">Modificar</a>
-                    <a href="{{ route('admin.productos.eliminar', ['id' => $p->id]) }}" class="btn-accion btn-borrar" onclick="return confirm('¿Seguro que deseas eliminar este producto?')">Eliminar</a>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-    
-    <div style="margin-top: 20px;">
-        <a href="{{ route('admin.dashboard') }}" style="text-decoration: none; color: #666;">&larr; Volver al Dashboard</a>
+                        <td>
+                            <a href="{{ route('admin.productos.editar', $prod->id) }}" class="btn btn-sm btn-warning">Editar</a>
+                            <a href="{{ route('admin.productos.eliminar', $prod->id) }}" class="btn btn-sm btn-danger" onclick="return confirm('¿Eliminar?')">Borrar</a>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
