@@ -10,9 +10,10 @@
         </div>
     @endif
 
-    <form action="{{ route('admin.productos.actualizar') }}" method="POST" enctype="multipart/form-data">
+    {{-- 1. CORRECCIÓN: Ruta correcta y pasamos el ID en la URL --}}
+    <form action="{{ route('admin.productos.actualizar', $producto->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
-        <input type="hidden" name="id" value="{{ $producto->id }}">
+        {{-- IMPORTANTE: Tu web.php usa POST para actualizar, así que NO ponemos @method('PUT') --}}
 
         <div class="mb-3">
             <label>Nombre del Producto:</label>
@@ -44,7 +45,8 @@
             @endif
             
             <label>Cambiar Imagen (Opcional):</label>
-            <input type="file" name="foto" class="form-control">
+            {{-- 2. CORRECCIÓN: name="imagen" --}}
+            <input type="file" name="imagen" class="form-control" accept="image/*">
         </div>
 
         <button type="submit" class="btn btn-primary">Actualizar Producto</button>

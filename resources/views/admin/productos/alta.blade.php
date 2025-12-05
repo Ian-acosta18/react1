@@ -14,6 +14,7 @@
         </div>
     @endif
 
+    {{-- 1. CORRECCIÓN: Ruta correcta según tu web.php --}}
     <form action="{{ route('admin.productos.guardar') }}" method="POST" enctype="multipart/form-data">
         @csrf
         
@@ -40,7 +41,8 @@
 
         <div class="mb-3">
             <label>Imagen:</label>
-            <input type="file" name="foto" class="form-control">
+            {{-- 2. CORRECCIÓN: name="imagen" para que coincida con el controlador --}}
+            <input type="file" name="imagen" class="form-control" accept="image/*">
         </div>
 
         <button type="submit" class="btn btn-primary">Guardar Producto</button>

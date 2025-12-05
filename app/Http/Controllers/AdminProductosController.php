@@ -16,7 +16,7 @@ class AdminProductosController extends Controller
 
     // 2. ALTA
     public function create() {
-        return view('admin.productos.create');
+        return view('admin.productos.alta');
     }
 
     // 3. GUARDAR
