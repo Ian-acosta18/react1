@@ -58,6 +58,8 @@ Route::middleware(['validaradmin'])->prefix('admin')->name('admin.')->group(func
     Route::get('/productos/editar/{id}', [AdminProductosController::class, 'editar'])->name('productos.editar');
     Route::post('/productos/actualizar', [AdminProductosController::class, 'actualizar'])->name('productos.actualizar');
     Route::get('/productos/eliminar/{id}', [AdminProductosController::class, 'eliminar'])->name('productos.eliminar');
+    
+    
     Route::get('/instalaciones', [App\Http\Controllers\AdminInstalacionesController::class, 'reporte'])->name('instalaciones.reporte');
     Route::get('/instalaciones/alta', [App\Http\Controllers\AdminInstalacionesController::class, 'alta'])->name('instalaciones.alta');
     Route::post('/instalaciones/guardar', [App\Http\Controllers\AdminInstalacionesController::class, 'guardar'])->name('instalaciones.guardar');
