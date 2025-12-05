@@ -23,19 +23,31 @@ class AdminProductosController extends Controller
 
     // 3. GUARDAR PRODUCTO
     public function store(Request $request) {
-        $request->validate([
-        'nombre'      => 'required|string|max:100|unique:productos,nombre', // Mantiene nombre único y limita largo
-        'descripcion' => 'nullable|string|max:500',
-        'precio'      => 'required|numeric|min:0', // Evita precios negativos
-        'stock'       => 'nullable|integer|min:0', // Evita stock negativo
-        'imagen'      => 'required|image|mimes:jpeg,png,jpg|max:500' // Máximo 5MB, solo formatos válidos
-        
-            ], [
-        // Mensajes personalizados (opcional)
-        'nombre.unique' => 'Este nombre de producto ya existe.',
-        'precio.min'    => 'El precio no puede ser negativo.',
-        'imagen.max'    => 'La imagen no debe pesar más de 2MB.'
-    ]);
+        $reglas = [
+            'nombre'      => 'required|string|max:100|unique:productos,nombre',
+            'descripcion' => 'nullable|string|max:500',
+            'precio'      => 'required|numeric|min:0',
+            'stock'       => 'nullable|integer|min:0',
+            'imagen'      => 'required|image|mimes:jpeg,png,jpg|max:2048'
+        ];
+
+        // Mensajes personalizados en español
+        $mensajes = [
+            'nombre.required' => 'El nombre del producto es obligatorio.',
+            'nombre.max'      => 'El nombre no puede tener más de 100 caracteres.',
+            'nombre.unique'   => 'Ya existe un producto registrado con este nombre.',
+            'precio.required' => 'El precio es obligatorio.',
+            'precio.numeric'  => 'El precio debe ser un valor numérico.',
+            'precio.min'      => 'El precio no puede ser negativo.',
+            'stock.integer'   => 'El stock debe ser un número entero.',
+            'stock.min'       => 'El stock no puede ser negativo.',
+            'imagen.required' => 'Debes subir una imagen para el producto.',
+            'imagen.image'    => 'El archivo subido debe ser una imagen.',
+            'imagen.mimes'    => 'La imagen debe ser de tipo: jpeg, png o jpg.',
+            'imagen.max'      => 'La imagen es demasiado pesada (máximo 2MB).'
+        ];
+
+        $request->validate($reglas, $mensajes);
 
         $prod = new Productos();
         $prod->nombre = $request->nombre;
@@ -66,13 +78,28 @@ class AdminProductosController extends Controller
     public function update(Request $request, $id) {
         $prod = Productos::find($id);
 
-        $request->validate([
-        'nombre'      => 'required|string|max:100', // Quitamos unique aquí para evitar error con el mismo producto
-        'descripcion' => 'nullable|string|max:500',
-        'precio'      => 'required|numeric|min:0',
-        'stock'       => 'nullable|integer|min:0',
-        'imagen'      => 'nullable|image|mimes:jpeg,png,jpg|max:2048' // Nullable porque al editar la imagen es opcional
-    ]);
+       $reglas = [
+            'nombre'      => 'required|string|max:100', 
+            'descripcion' => 'nullable|string|max:500',
+            'precio'      => 'required|numeric|min:0',
+            'stock'       => 'nullable|integer|min:0',
+            'imagen'      => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
+        ];
+
+        $mensajes = [
+            'nombre.required' => 'El nombre del producto es obligatorio.',
+            'nombre.max'      => 'El nombre no puede tener más de 100 caracteres.',
+            'precio.required' => 'El precio es obligatorio.',
+            'precio.numeric'  => 'El precio debe ser un valor numérico.',
+            'precio.min'      => 'El precio no puede ser negativo.',
+            'stock.integer'   => 'El stock debe ser un número entero.',
+            'stock.min'       => 'El stock no puede ser negativo.',
+            'imagen.image'    => 'El archivo debe ser una imagen válida.',
+            'imagen.mimes'    => 'La imagen debe ser de tipo: jpeg, png o jpg.',
+            'imagen.max'      => 'La imagen es demasiado pesada (máximo 2MB).'
+        ];
+
+        $request->validate($reglas, $mensajes);
 
         if ($request->hasFile('imagen')) {
             // Borrar imagen anterior
