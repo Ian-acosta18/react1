@@ -24,10 +24,18 @@ class AdminProductosController extends Controller
     // 3. GUARDAR PRODUCTO
     public function store(Request $request) {
         $request->validate([
-            'nombre' => 'required',
-            'precio' => 'required|numeric',
-            'imagen' => 'required|image'
-        ]);
+        'nombre'      => 'required|string|max:100|unique:productos,nombre', // Mantiene nombre único y limita largo
+        'descripcion' => 'nullable|string|max:500',
+        'precio'      => 'required|numeric|min:0', // Evita precios negativos
+        'stock'       => 'nullable|integer|min:0', // Evita stock negativo
+        'imagen'      => 'required|image|mimes:jpeg,png,jpg|max:500' // Máximo 5MB, solo formatos válidos
+        
+            ], [
+        // Mensajes personalizados (opcional)
+        'nombre.unique' => 'Este nombre de producto ya existe.',
+        'precio.min'    => 'El precio no puede ser negativo.',
+        'imagen.max'    => 'La imagen no debe pesar más de 2MB.'
+    ]);
 
         $prod = new Productos();
         $prod->nombre = $request->nombre;
@@ -44,13 +52,13 @@ class AdminProductosController extends Controller
 
         $prod->save();
         
-        // CORRECCIÓN REDIRECCIÓN: Te devuelve a la lista correcta
         return redirect()->route('admin.productos.reporte')->with('mensaje', 'Producto creado exitosamente');
     }
 
     // 4. FORMULARIO DE EDICIÓN
     public function edit($id) {
         $producto = Productos::find($id);
+        
         return view('admin.productos.edit', compact('producto'));
     }
 
@@ -59,10 +67,12 @@ class AdminProductosController extends Controller
         $prod = Productos::find($id);
 
         $request->validate([
-            'nombre' => 'required',
-            'precio' => 'required|numeric',
-            'imagen' => 'nullable|image'
-        ]);
+        'nombre'      => 'required|string|max:100', // Quitamos unique aquí para evitar error con el mismo producto
+        'descripcion' => 'nullable|string|max:500',
+        'precio'      => 'required|numeric|min:0',
+        'stock'       => 'nullable|integer|min:0',
+        'imagen'      => 'nullable|image|mimes:jpeg,png,jpg|max:2048' // Nullable porque al editar la imagen es opcional
+    ]);
 
         if ($request->hasFile('imagen')) {
             // Borrar imagen anterior

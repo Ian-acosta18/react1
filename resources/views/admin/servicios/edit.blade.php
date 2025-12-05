@@ -10,6 +10,16 @@
                         Editar Servicio
                     </h2>
                 </div>
+
+                @if (count($errors) > 0)
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
                 
                 <div class="card-body p-4">
                     {{-- Formulario apuntando a la ruta de actualizar --}}
@@ -18,11 +28,11 @@
                         {{-- ID Oculto (Indispensable para saber cuál actualizar) --}}
                         <input type="hidden" name="id" value="{{ $servicio->id }}">
 
-                        {{-- 1. NOMBRE --}}
+                        {{-- 1. NOMBRE (Agregado minlength y maxlength) --}}
                         <div class="mb-4">
                             <label class="form-label fw-bold" style="color: #5c4b45;">Nombre del Servicio:</label>
                             <input type="text" name="nombre_servicio" class="form-control form-control-lg" 
-                                   value="{{ $servicio->nombre_servicio }}" required>
+                            value="{{ $servicio->nombre_servicio }}" required minlength="4" maxlength="60">
                         </div>
 
                         {{-- 2. CATEGORÍA (Dropdown) --}}
@@ -38,15 +48,14 @@
                                 @endforeach
                             </select>
                         </div>
-
-                        {{-- 3. PRECIO --}}
+                        {{-- 3. PRECIO (Agregado min y max) --}}
                         <div class="mb-4">
-                            <label class="form-label fw-bold" style="color: #5c4b45;">Precio ($):</label>
-                            <div class="input-group">
-                                <span class="input-group-text">$</span>
-                                <input type="number" step="0.01" name="precio" class="form-control form-control-lg" 
-                                       value="{{ $servicio->precio }}" required>
-                            </div>
+                             <label class="form-label fw-bold" style="color: #5c4b45;">Precio ($):</label>
+                        <div class="input-group">
+                            <span class="input-group-text">$</span>
+                            <input type="number" step="0.01" name="precio" class="form-control form-control-lg" 
+                            value="{{ $servicio->precio }}" required min="0" max="10000">
+                        </div>
                         </div>
 
                         {{-- 4. IMAGEN (Previsualización y Cambio) --}}

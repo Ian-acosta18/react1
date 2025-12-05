@@ -51,13 +51,6 @@
             <div class="info">
                 <h3>{{ $inst->titulo }}</h3>
                 <p>{{ $inst->descripcion }}</p>
-                
-                {{-- Lista decorativa (Igual para todos por ahora) --}}
-                <ul class="lista-amenidades">
-                    <li>✨ Espacio Sanitizado</li>
-                    <li>✨ Ambiente Relax</li>
-                    <li>✨ Experiencia Premium</li>
-                </ul>
             </div>
         </div>
         @endforeach
