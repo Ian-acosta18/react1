@@ -50,9 +50,24 @@
                 </div>
 
                 <div class="form-col">
-                    <label for="stock">Stock (Cantidad)</label>
+                    <label for="stock_selector">Stock (Cantidad)</label>
                     <div class="input-with-icon">
-                        <input type="number" id="stock" name="stock" class="input-premium" value="{{ old('stock') }}" placeholder="0">
+                        
+                        <select id="stock_selector" class="input-premium" style="margin-bottom: 10px;">
+                            <option value="">Selecciona una cantidad</option>
+                            @foreach($stock_opciones as $opcion)
+                                <option value="{{ $opcion->cantidad }}">{{ $opcion->cantidad }}</option>
+                            @endforeach
+                            <option value="otro">Otro (Manual)</option>
+                        </select>
+
+                        <input type="number" 
+                               id="stock" 
+                               name="stock" 
+                               class="input-premium" 
+                               value="{{ old('stock') }}" 
+                               placeholder="Ingresa la cantidad manual"
+                               style="display: none;">
                     </div>
                 </div>
             </div>
@@ -111,4 +126,56 @@
         color: #666;
     }
 </style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const stockSelector = document.getElementById('stock_selector');
+        const stockInput = document.getElementById('stock');
+        
+        // Creamos un array con los valores que vienen de la BD para validación en JS
+        // Usamos la directiva de Blade para pasar los datos de PHP a JS
+        const predefinidos = @json($stock_opciones->pluck('cantidad')); 
+        // El resultado será algo como: [10, 20, 30, 40, 50, 100]
+
+        // 1. Lógica al cargar (por si hay errores de validación y regresa con old('stock'))
+        if (stockInput.value) {
+            // Convertimos a entero para comparar con seguridad
+            const valorGuardado = parseInt(stockInput.value);
+            
+            if (predefinidos.includes(valorGuardado)) {
+                stockSelector.value = valorGuardado;
+                stockInput.style.display = 'none';
+            } else {
+                stockSelector.value = 'otro';
+                stockInput.style.display = 'block';
+            }
+        }
+
+        // 2. Evento cambio en el select
+        stockSelector.addEventListener('change', function() {
+            const seleccion = this.value;
+
+            if (seleccion === 'otro') {
+                stockInput.style.display = 'block';
+                stockInput.value = ''; 
+                stockInput.placeholder = "Escribe la cantidad...";
+                stockInput.focus();
+            } else if (seleccion === "") {
+                stockInput.style.display = 'none';
+                stockInput.value = '';
+            } else {
+                stockInput.style.display = 'none';
+                stockInput.value = seleccion; 
+            }
+        });
+
+        // 3. Si escribe manualmente, aseguramos que el select siga en 'otro'
+        stockInput.addEventListener('input', function() {
+            const valor = parseInt(this.value);
+            if (!predefinidos.includes(valor)) {
+                stockSelector.value = 'otro';
+            }
+        });
+    });
+</script>
 @endsection

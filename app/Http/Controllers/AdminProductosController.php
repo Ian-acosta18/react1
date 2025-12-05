@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Productos;
-use Illuminate\Support\Facades\File; // Corrección importante para borrar imágenes
+use App\Models\StockOpcion; // <--- AGREGAR ESTA LÍNEA IMPORTANTE
+use Illuminate\Support\Facades\File;
 
 class AdminProductosController extends Controller
 {
@@ -14,9 +15,13 @@ class AdminProductosController extends Controller
         return view('admin.productos.reporte', compact('productos'));
     }
 
-    // 2. ALTA
+    // 2. ALTA (MODIFICADO)
     public function create() {
-        return view('admin.productos.alta');
+        // Obtenemos las cantidades de la BD ordenadas
+        $stock_opciones = StockOpcion::orderBy('cantidad', 'asc')->get();
+        
+        // Las pasamos a la vista usando compact
+        return view('admin.productos.alta', compact('stock_opciones'));
     }
 
     // 3. GUARDAR
@@ -25,7 +30,8 @@ class AdminProductosController extends Controller
             'nombre'      => 'required|string|max:100|unique:productos,nombre|not_regex:/^[0-9]+$/', 
             'descripcion' => 'nullable|string|max:500|not_regex:/^[0-9]+$/',
             'precio'      => 'required|numeric|min:0',
-            'stock'       => 'nullable|integer|min:0',
+            // Validamos que sea entero. El valor final ya viene procesado por el JS de la vista.
+            'stock'       => 'nullable|integer|min:0', 
             'imagen'      => 'required|image|mimes:jpeg,png,jpg|max:2048'
         ];
 
@@ -62,10 +68,9 @@ class AdminProductosController extends Controller
         return view('admin.productos.edit', compact('producto'));
     }
 
-    // 5. ACTUALIZAR (CORREGIDO)
-    public function update(Request $request) { // Ya no pedimos $id aquí
+    // 5. ACTUALIZAR
+    public function update(Request $request) {
         
-        // Buscamos el producto usando el ID que viene oculto en el formulario
         $prod = Productos::find($request->id);
 
         if (!$prod) {
@@ -83,7 +88,6 @@ class AdminProductosController extends Controller
         $request->validate($reglas);
 
         if ($request->hasFile('imagen')) {
-            // Borramos imagen vieja
             if ($prod->imagen && File::exists(public_path($prod->imagen))) {
                 File::delete(public_path($prod->imagen));
             }
