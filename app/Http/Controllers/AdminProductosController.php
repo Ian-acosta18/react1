@@ -3,26 +3,23 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Productos;
+use App\Models\Productos; // Asegúrate de que tu modelo se llame "Productos.php"
 use Session;
 use File;
 
 class AdminProductosController extends Controller
 {
-    // 1. REPORTE
     public function reporte()
     {
         $productos = Productos::orderBy('nombre', 'ASC')->get();
         return view('admin.productos.reporte')->with('productos', $productos);
     }
 
-    // 2. ALTA (VISTA)
     public function alta()
     {
         return view('admin.productos.alta');
     }
 
-    // 3. GUARDAR (ACCION)
     public function guardar(Request $request)
     {
         $this->validate($request, [
@@ -37,7 +34,6 @@ class AdminProductosController extends Controller
 
         if ($request->hasFile('foto')) {
             $file = $request->file('foto');
-            // Nombre único: producto_timestamp.ext
             $img = 'producto_' . time() . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('imagen'), $img);
             $ruta_imagen = 'imagen/' . $img;
@@ -49,7 +45,7 @@ class AdminProductosController extends Controller
         $producto->precio      = $request->precio;
         $producto->stock       = $request->stock;
         $producto->imagen      = $ruta_imagen;
-        $producto->activo      = 1; // Por defecto activo
+        $producto->activo      = 1;
         
         $producto->save();
 
@@ -57,7 +53,6 @@ class AdminProductosController extends Controller
         return redirect()->route('admin.productos.reporte');
     }
 
-    // 4. EDITAR (VISTA)
     public function editar($id)
     {
         $producto = Productos::find($id);
@@ -70,7 +65,6 @@ class AdminProductosController extends Controller
         return view('admin.productos.edit')->with('producto', $producto);
     }
 
-    // 5. ACTUALIZAR (ACCION)
     public function actualizar(Request $request)
     {
         $this->validate($request, [
@@ -89,11 +83,9 @@ class AdminProductosController extends Controller
         }
 
         if ($request->hasFile('foto')) {
-            // Borrar foto anterior
             if ($producto->imagen && File::exists(public_path($producto->imagen))) {
                 File::delete(public_path($producto->imagen));
             }
-            // Subir nueva
             $file = $request->file('foto');
             $img = 'producto_' . time() . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('imagen'), $img);
@@ -111,7 +103,6 @@ class AdminProductosController extends Controller
         return redirect()->route('admin.productos.reporte');
     }
 
-    // 6. ELIMINAR (ACCION)
     public function eliminar($id)
     {
         $producto = Productos::find($id);

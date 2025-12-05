@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AdminServiciosController;
+use App\Http\Controllers\AdminProductosController; 
 
 // ==========================================
 // 1. RUTAS PÚBLICAS (CLIENTES)
@@ -41,19 +42,28 @@ Route::middleware(['validaradmin'])->prefix('admin')->name('admin.')->group(func
     Route::get('/dashboard', function () {
         return view('admin.dashboard');
     })->name('dashboard');
-Route::get('/servicios', [AdminServiciosController::class, 'reporte'])->name('servicios.reporte');
+
+    // --- SERVICIOS ---
+    Route::get('/servicios', [AdminServiciosController::class, 'reporte'])->name('servicios.reporte');
     Route::get('/servicios/alta', [AdminServiciosController::class, 'alta'])->name('servicios.alta');
     Route::post('/servicios/guardar', [AdminServiciosController::class, 'guardar'])->name('servicios.guardar');
     Route::get('/servicios/editar/{id}', [AdminServiciosController::class, 'editar'])->name('servicios.editar');
     Route::post('/servicios/actualizar', [AdminServiciosController::class, 'actualizar'])->name('servicios.actualizar');
     Route::get('/servicios/eliminar/{id}', [AdminServiciosController::class, 'eliminar'])->name('servicios.eliminar');
 
-    Route::get('/productos', [App\Http\Controllers\AdminProductosController::class, 'reporte'])->name('productos.reporte');
-    Route::get('/productos/alta', [App\Http\Controllers\AdminProductosController::class, 'alta'])->name('productos.alta');
-    Route::post('/productos/guardar', [App\Http\Controllers\AdminProductosController::class, 'guardar'])->name('productos.guardar');
-    Route::get('/productos/editar/{id}', [App\Http\Controllers\AdminProductosController::class, 'editar'])->name('productos.editar');
-    Route::post('/productos/actualizar', [App\Http\Controllers\AdminProductosController::class, 'actualizar'])->name('productos.actualizar');
-    Route::get('/productos/eliminar/{id}', [App\Http\Controllers\AdminProductosController::class, 'eliminar'])->name('productos.eliminar');
+    // --- PRODUCTOS (NUEVO) ---
+    Route::get('/productos', [AdminProductosController::class, 'reporte'])->name('productos.reporte');
+    Route::get('/productos/alta', [AdminProductosController::class, 'alta'])->name('productos.alta');
+    Route::post('/productos/guardar', [AdminProductosController::class, 'guardar'])->name('productos.guardar');
+    Route::get('/productos/editar/{id}', [AdminProductosController::class, 'editar'])->name('productos.editar');
+    Route::post('/productos/actualizar', [AdminProductosController::class, 'actualizar'])->name('productos.actualizar');
+    Route::get('/productos/eliminar/{id}', [AdminProductosController::class, 'eliminar'])->name('productos.eliminar');
+    Route::get('/instalaciones', [App\Http\Controllers\AdminInstalacionesController::class, 'reporte'])->name('instalaciones.reporte');
+    Route::get('/instalaciones/alta', [App\Http\Controllers\AdminInstalacionesController::class, 'alta'])->name('instalaciones.alta');
+    Route::post('/instalaciones/guardar', [App\Http\Controllers\AdminInstalacionesController::class, 'guardar'])->name('instalaciones.guardar');
+    Route::get('/instalaciones/editar/{id}', [App\Http\Controllers\AdminInstalacionesController::class, 'editar'])->name('instalaciones.editar');
+    Route::post('/instalaciones/actualizar', [App\Http\Controllers\AdminInstalacionesController::class, 'actualizar'])->name('instalaciones.actualizar');
+    Route::get('/instalaciones/eliminar/{id}', [App\Http\Controllers\AdminInstalacionesController::class, 'eliminar'])->name('instalaciones.eliminar');
 
 
 });
