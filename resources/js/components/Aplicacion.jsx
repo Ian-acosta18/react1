@@ -1,7 +1,7 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-// Importación de las páginas creadas a partir de las vistas Blade
+// Importación de las páginas
 import Inicio from '../pages/Inicio';
 import Servicios from '../pages/Servicios';
 import Productos from '../pages/Productos';
@@ -14,18 +14,18 @@ import NoExiste from '../pages/NoExiste';
 const Aplicacion = () => {
     return (
         <Router>
-            <Switch>
-                <Route exact path="/" component={Inicio} />
-                <Route exact path="/servicios" component={Servicios} />
-                <Route exact path="/productos" component={Productos} />
-                <Route exact path="/instalaciones" component={Instalaciones} />
-                <Route exact path="/nosotros" component={Nosotros} />
-                <Route exact path="/contacto" component={Contacto} />
-                <Route exact path="/reservaciones" component={Reservaciones} />
+            <Routes>
+                <Route path="/" element={<Inicio />} />
+                <Route path="/servicios" element={<Servicios />} />
+                <Route path="/productos" element={<Productos />} />
+                <Route path="/instalaciones" element={<Instalaciones />} />
+                <Route path="/nosotros" element={<Nosotros />} />
+                <Route path="/contacto" element={<Contacto />} />
+                <Route path="/reservaciones" element={<Reservaciones />} />
 
-                {/* Ruta por defecto para manejar errores 404 de URLs inválidas */}
-                <Route component={NoExiste} />
-            </Switch>
+                {/* Ruta de respaldo para Error 404 */}
+                <Route path="*" element={<NoExiste />} />
+            </Routes>
         </Router>
     );
 };
